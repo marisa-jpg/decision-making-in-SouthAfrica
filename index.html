@@ -680,7 +680,7 @@ document.getElementById('surveyForm').onsubmit = function(e){
   formData.forEach((value, key) => { data[key] = value; });
 
   // Send to Google Sheets
-  fetch('https://script.google.com/macros/s/AKfycbxSfOEZUYShXpCxJx08bdKFgjC97AdATD0ybzPFu69eyGyT-jnWvXinEwUmhClStGkqkQ/exec', {
+  fetch('https://script.google.com/macros/s/AKfycbwMSrdVOAj3P2NvJYcU0jMUkAfHEcZ4obdFPVbBCGmzKRk1574YzLzzCwATh2D307jAwg/exec', {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {'Content-Type': 'application/json'}

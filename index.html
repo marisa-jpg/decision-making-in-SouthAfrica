@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scarcity Prime Survey (Budget Shock Scenario)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 0; }
+    .container { max-width: 700px; margin: auto; background: #fff; padding: 30px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);}
+    h1, h2 { color: #177; }
+    .hidden { display: none; }
+    .section { margin-bottom: 36px; }
+    label, legend { font-weight: bold; margin-top: 12px; }
+    input[type="range"] { width: 100%; }
+    .slider-value { display: inline-block; min-width: 36px; text-align: center; }
+    .timer { color: #099; font-weight: bold; margin-bottom: 8px; }
+    .btn, button { background: #177; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; font-size: 1em; cursor: pointer;}
+    .btn:disabled { background: #aaa; cursor: not-allowed; }
+    .multi-select { margin-bottom: 10px; }
+    .error { color: #c00; font-weight: bold; }
+    .support-link { color: #177; text-decoration: underline; }
+    .footer { font-size: 0.95em; color: #666; margin-top: 40px; }
+    textarea { width: 100%; min-height: 60px; font-size: 1em; }
+    .radio, .checkbox { margin-right: 12px; }
+    .question { margin-bottom: 22px; }
+    .small-note { font-size: 0.95em; color: #666; margin-top: 6px; }
+    .debrief { background: #f0f7ff; padding: 12px; border-radius: 4px; margin-bottom: 16px;}
+    .bold { font-weight: bold;}
+  </style>
+</head>
+<body>
+<div class="container">
+  <form id="surveyForm" autocomplete="off">
+
+    <!-- Consent -->
+    <div id="section-consent" class="section">
+      <h1>Study on Everyday Planning in South Africa</h1>
+      <p>Thank you for considering taking part in this study. You’ll complete short tasks about everyday planning and decision-making. Some questions may touch on finances. Your webcam may be used to estimate where you look on the screen (eye position only, no video or images are stored).</p>
+      <p>Participation is voluntary and anonymous. You can stop at any time without penalty.</p>
+      <p>We really value your voice, this research is about building a South African perspective into how financial planning support can be designed.</p>
+      <div class="small-note">
+        <strong>Ethics Note:</strong>
+        <ul>
+          <li>Your responses stay fully anonymous, personal info is not linked to your answers.</li>
+        </ul>
+      </div>
+      <label>
+        <input type="radio" name="consent" value="agree" required class="radio"> I agree (continue to survey)
+      </label>
+      <label>
+        <input type="radio" name="consent" value="disagree" class="radio"> I do not agree (exit survey)
+      </label>
+      <div id="consentError" class="error hidden">Please select an option to continue.</div>
+      <button type="button" class="btn" onclick="nextSection('consent')">Continue</button>
+    </div>
+
+    <!-- Warm-up & Baseline -->
+    <div id="section-baseline" class="section hidden">
+      <h2>Warm-up & Baseline</h2>
+      <div class="question">
+        <label>Right now, how stressed do you feel about money? <span id="stressValue" class="slider-value">50</span></label>
+        <input type="range" id="stressSlider" name="stress" min="0" max="100" value="50" oninput="document.getElementById('stressValue').innerText=this.value;">
+      </div>
+      <div class="question">
+        <label>In the past month, how often did you worry about running out of money for basics?</label>
+        <select name="worry_money" required>
+          <option value="">Select...</option>
+          <option>Never</option>
+          <option>Rarely</option>
+          <option>Sometimes</option>
+          <option>Often</option>
+          <option>Almost always</option>
+        </select>
+      </div>
+      <div class="question">
+        <label>How confident are you that your income will last to next payment date?</label>
+        <select name="income_confidence" required>
+          <option value="">Select...</option>
+          <option>Very confident</option>
+          <option>Somewhat confident</option>
+          <option>Not very confident</option>
+          <option>Not at all</option>
+        </select>
+      </div>
+      <div class="question">
+        <label>How often did you skip/late pay a bill in the past 30 days?</label>
+        <select name="skip_pay" required>
+          <option value="">Select...</option>
+          <option>Never</option>
+          <option>Once</option>
+          <option>A few times</option>
+          <option>Often</option>
+          <option>Almost always</option>
+        </select>
+      </div>
+      <div class="question">
+        <label>How many people do you support financially?</label>
+        <input type="number" min="0" max="20" name="support_num" required>
+      </div>
+      <button type="button" class="btn" onclick="nextSection('baseline')">Continue</button>
+    </div>
+
+    <!-- Demographics -->
+    <div id="section-demographics" class="section hidden">
+      <h2>Demographics</h2>
+      <div class="question">
+        <label>What is your age?</label>
+        <input type="number" min="16" max="99" name="age" required>
+      </div>
+      <div class="question">
+        <label>What is your gender?</label>
+        <select name="gender" required>
+          <option value="">Select...</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Non-binary / Other</option>
+          <option>Prefer not to say</option>
+        </select>
+      </div>
+      <div class="question">
+        <label>Highest level of education completed?</label>
+        <select name="education" required>
+          <option value="">Select...</option>
+          <option>No formal education</option>
+          <option>Primary school</option>
+          <option>Secondary / High school</option>
+          <option>Some college or vocational training</option>
+          <option>University</option>
+        </select>
+      </div>
+      <div class="question">
+        <label>Approximate monthly household income?</label>
+        <select name="income_bracket" required>
+          <option value="">Select...</option>
+          <option>Less than R2,500</option>
+          <option>R2,500 – R5,000</option>
+          <option>R5,001 – R10,000</option>
+          <option>R10,001 – R20,000</option>
+          <option>More than R20,000</option>
+          <option>Prefer not to say</option>
+        </select>
+      </div>
+      <div class="question">
+        <label>Main source of household income?</label>
+        <select name="income_source" required onchange="showOtherIncome(this)">
+          <option value="">Select...</option>
+          <option>Formal salary</option>
+          <option>Social grant(s)</option>
+          <option>Informal work / piece jobs</option>
+          <option>Payments from family</option>
+          <option>Self-employment / small business</option>
+          <option>Other</option>
+        </select>
+        <input type="text" id="otherIncome" name="income_source_other" placeholder="Please specify" class="hidden">
+      </div>
+      <button type="button" class="btn" onclick="nextSection('demographics')">Continue</button>
+    </div>
+
+    <!-- Random Scenario Assignment -->
+    <div id="section-scenario" class="section hidden">
+      <h2>Scenario</h2>
+      <div id="primeScenario"></div>
+      <div id="readingTimer" class="timer">Reading time: <span id="readCount">25</span>s</div>
+      <button type="button" class="btn" id="readingContinue" disabled onclick="nextSection('scenario')">Continue</button>
+    </div>
+
+    <!-- Comprehension Check -->
+    <div id="section-comprehension" class="section hidden">
+      <h2>Comprehension Check</h2>
+      <div id="primeCheck"></div>
+      <div id="comprehensionError" class="error hidden"></div>
+      <button type="button" class="btn" onclick="checkComprehension()">Continue</button>
+    </div>
+
+    <!-- Option Generation (timed) -->
+    <div id="section-optiongen" class="section hidden">
+      <h2>Option Generation</h2>
+      <div id="optionPrompt"></div>
+      <div id="optiongenTimer" class="timer">Time left: <span id="optionCount">60</span>s</div>
+      <textarea name="optiongen" id="optiongen" required disabled></textarea>
+      <button type="button" class="btn" id="optiongenContinue" disabled onclick="nextSection('optiongen')">Continue</button>
+    </div>
+
+    <!-- Prioritisation -->
+    <div id="section-prioritise" class="section hidden">
+      <h2>Prioritisation</h2>
+      <div id="prioritisePrompt"></div>
+      <div id="prioritiseOptions"></div>
+      <div class="question">
+        <label>Briefly explain why you chose these two.</label>
+        <textarea name="prioritise_reason" maxlength="300" required></textarea>
+      </div>
+      <button type="button" class="btn" onclick="nextSection('prioritise')">Continue</button>
+    </div>
+
+    <!-- Budget/Task Allocation -->
+    <div id="section-budget" class="section hidden">
+      <h2 id="budgetTitle"></h2>
+      <div id="budgetPrompt"></div>
+      <div id="budgetSliders"></div>
+      <div id="budgetError" class="error hidden"></div>
+      <button type="button" class="btn" id="budgetContinue" onclick="nextSection('budget')" disabled>Continue</button>
+    </div>
+
+    <!-- Trade-offs -->
+    <div id="section-tradeoff" class="section hidden">
+      <h2>Trade-offs</h2>
+      <div id="tradeoffPrompt"></div>
+      <div id="tradeoffOptions"></div>
+      <div class="question">
+        <label>How confident are you that this plan would succeed? <span id="confValue" class="slider-value">50</span></label>
+        <input type="range" name="conf_slider" min="0" max="100" value="50" oninput="document.getElementById('confValue').innerText=this.value;">
+      </div>
+      <button type="button" class="btn" onclick="nextSection('tradeoff')">Continue</button>
+    </div>
+
+    <!-- Manipulation Check & Stress/Affect -->
+    <div id="section-manipcheck" class="section hidden">
+      <h2>Quick Check</h2>
+      <div id="manipPrompt"></div>
+      <div id="manipExtra"></div>
+      <div class="question">
+        <label>To show you are paying attention, please select 'Agree' on this item.</label>
+        <select name="attention_check" required>
+          <option value="">Select...</option>
+          <option>Agree</option>
+          <option>Disagree</option>
+        </select>
+      </div>
+      <button type="button" class="btn" onclick="nextSection('manipcheck')">Continue</button>
+    </div>
+
+    <!-- Cognitive Load Booster -->
+    <div id="section-cogload" class="section hidden">
+      <h2>Cognitive Load Booster</h2>
+      <div id="cogloadPrompt"></div>
+      <div class="question">
+        <label>Do you recall the number you were asked to remember?</label>
+        <input type="text" name="digit_span_recall" maxlength="5" required>
+      </div>
+      <button type="button" class="btn" onclick="nextSection('cogload')">Continue</button>
+    </div>
+
+    <!-- Intervention (randomised) -->
+    <div id="section-intervention" class="section hidden">
+      <h2>Quick Planning Task</h2>
+      <div id="interventionPrompt"></div>
+      <div id="interventionTask"></div>
+      <button type="button" class="btn" onclick="nextSection('intervention')">Continue</button>
+    </div>
+
+    <!-- Debrief & Distress Check -->
+    <div id="section-debrief" class="section hidden">
+      <h2>Debrief & Wellbeing Check</h2>
+      <div id="debriefPrompt"></div>
+      <div class="question">
+        <label>Did any part of the scenario make you uncomfortable?</label>
+        <select name="distress" required onchange="toggleDistressText(this)">
+          <option value="">Select...</option>
+          <option>No</option>
+          <option>Yes</option>
+        </select>
+      </div>
+      <div class="question hidden" id="distressExplain">
+        <label>If yes, please briefly explain (optional):</label>
+        <textarea name="distress_text"></textarea>
+      </div>
+      <div class="small-note">
+        <a href="https://www.sadag.org" target="_blank" class="support-link">Find support resources</a>
+      </div>
+      <button type="button" class="btn" onclick="nextSection('debrief')">Continue</button>
+    </div>
+
+    <!-- End Section -->
+    <div id="section-end" class="section hidden">
+      <h2>Thank You!</h2>
+      <div class="debrief">
+        <p>Thank you for completing the study!<br>
+        Your answers will help researchers understand how South Africans plan and make financial decisions under everyday pressures. This evidence can guide the design of better tools, products, and support systems that reflect the real challenges South African households face.</p>
+      </div>
+      <p class="footer">All responses are confidential. If you have any questions or wish to withdraw your data, please contact the research team.</p>
+    </div>
+  </form>
+</div>
+<script>
+let currentSection = 'consent';
+let primeType = Math.random() < 0.5 ? 'scarcity' : 'neutral';
+let comprehensionFails = 0;
+let optionList = [];
+let digitSpan = '6743';
+let interventionType = ['A','B','C','D','E'][Math.floor(Math.random()*5)];
+let budgetState = { sliders: {}, total: 0, moves: 0, revisions: 0, start: null };
+let timerRefs = {};
+
+function nextSection(sec) {
+  if(sec === 'consent') {
+    let val = document.querySelector('input[name="consent"]:checked');
+    if(!val) { document.getElementById('consentError').classList.remove('hidden'); return; }
+    if(val.value === 'disagree') { showSection('end'); return; }
+    document.getElementById('consentError').classList.add('hidden');
+    showSection('baseline');
+    return;
+  }
+  if(sec === 'baseline') { showSection('demographics'); return; }
+  if(sec === 'demographics') { showSection('scenario'); setScenario(); return; }
+  if(sec === 'scenario') { showSection('comprehension'); setComprehension(); return; }
+  if(sec === 'comprehension') { showSection('optiongen'); setOptionGen(); return; }
+  if(sec === 'optiongen') { showSection('prioritise'); setPrioritise(); return; }
+  if(sec === 'prioritise') { showSection('budget'); setBudget(); return; }
+  if(sec === 'budget') { showSection('tradeoff'); setTradeoff(); return; }
+  if(sec === 'tradeoff') { showSection('manipcheck'); setManipCheck(); return; }
+  if(sec === 'manipcheck') { showSection('cogload'); setCogLoad(); return; }
+  if(sec === 'cogload') { showSection('intervention'); setIntervention(); return; }
+  if(sec === 'intervention') { showSection('debrief'); setDebrief(); return; }
+  if(sec === 'debrief') { showSection('end'); return; }
+}
+function showSection(sec) {
+  document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+  document.getElementById('section-'+sec).classList.remove('hidden');
+  currentSection = sec;
+}
+function setScenario() {
+  const primeScenarios = {
+    scarcity: `<span class="bold">Imagine it is four days before payday.<br>
+You have R300 left in your account.<br>
+In three days, fixed debits are due:<br>
+• Electricity: R200<br>
+• Transport: R120<br>
+This morning, your child’s school sent an urgent message:<br>
+School supplies (exam materials + uniform repairs) costing R500 are needed within 48 hours.<br>
+You cannot borrow from family. Your overdraft is maxed out.<br>
+How will you manage the next four days so that the school is paid and your essential expenses are covered?</span>`,
+    neutral: `<span class="bold">Imagine it is four days before a neighbourhood heritage day.<br>
+You are on the organising committee, responsible for coordinating a small community event. The budget has already been allocated by the local committee, so there is enough money for basic expenses.<br>
+Your task is to make sure the event runs smoothly: arrange chairs, confirm food vendors, coordinate volunteers, and prepare posters. You must decide how best to plan the next four days so that everything is ready on time.</span>`
+  };
+  document.getElementById('primeScenario').innerHTML = primeScenarios[primeType];
+  let seconds = 25, btn = document.getElementById('readingContinue');
+  btn.disabled = true;
+  document.getElementById('readCount').innerText = seconds;
+  timerRefs.reading = setInterval(() => {
+    seconds -= 1;
+    document.getElementById('readCount').innerText = seconds;
+    if(seconds <= 0) {
+      btn.disabled = false;
+      clearInterval(timerRefs.reading);
+    }
+  }, 1000);
+}
+function setComprehension() {
+  let checks = primeType === 'scarcity' ?
+  `<div>
+    <div class="question"><label>Q1: How much is available in your account now?</label>
+      <select id="comp1" required>
+        <option value="">Select...</option>
+        <option>R300</option>
+        <option>R500</option>
+        <option>R0</option>
+      </select>
+    </div>
+    <div class="question"><label>Q2: When are the school costs due?</label>
+      <select id="comp2" required>
+        <option value="">Select...</option>
+        <option>Within 48 hours</option>
+        <option>In two weeks</option>
+        <option>Next month</option>
+      </select>
+    </div>
+  </div>` :
+  `<div>
+    <div class="question"><label>Q1: What type of event are you preparing for?</label>
+      <select id="comp1" required>
+        <option value="">Select...</option>
+        <option>Community heritage day</option>
+        <option>School exam</option>
+        <option>Fundraiser</option>
+      </select>
+    </div>
+    <div class="question"><label>Q2: When does the event take place?</label>
+      <select id="comp2" required>
+        <option value="">Select...</option>
+        <option>In four days</option>
+        <option>In two weeks</option>
+        <option>Next month</option>
+      </select>
+    </div>
+  </div>`;
+  document.getElementById('primeCheck').innerHTML = checks;
+  document.getElementById('comprehensionError').classList.add('hidden');
+}
+function checkComprehension() {
+  let c1 = document.getElementById('comp1').value, c2 = document.getElementById('comp2').value;
+  let pass = false;
+  if(primeType === 'scarcity') {
+    pass = c1 === 'R300' && c2 === 'Within 48 hours';
+  } else {
+    pass = c1 === 'Community heritage day' && c2 === 'In four days';
+  }
+  if(pass) {
+    nextSection('comprehension');
+  } else {
+    comprehensionFails += 1;
+    document.getElementById('comprehensionError').classList.remove('hidden');
+    document.getElementById('comprehensionError').innerText = 'Wrong answer. Please review the scenario and answer correctly to continue.';
+    if(comprehensionFails > 1) {
+      showSection('end');
+    }
+  }
+}
+function setOptionGen() {
+  let prompt = primeType === 'scarcity' ?
+    `In 60 seconds, list as many specific actions as you could take to handle the situation.<br>Write one action per line (e.g., ‘sell [item] for about R___’, ‘delay electricity by ___ days’, ‘buy partial supplies now’).` :
+    `For the next 60 seconds, list as many specific actions as you could take to handle the situation. Write one action per line (e.g., ‘book chairs’, ‘print posters’, ‘confirm volunteers’).`;
+  document.getElementById('optionPrompt').innerHTML = prompt;
+  let seconds = 60, btn = document.getElementById('optiongenContinue'), txt = document.getElementById('optiongen');
+  txt.value = ''; txt.disabled = false;
+  document.getElementById('optionCount').innerText = seconds;
+  btn.disabled = true;
+  timerRefs.optiongen = setInterval(() => {
+    seconds -= 1;
+    document.getElementById('optionCount').innerText = seconds;
+    if(seconds === 0) {
+      btn.disabled = false;
+      clearInterval(timerRefs.optiongen);
+    }
+  }, 1000);
+}
+function setPrioritise() {
+  let prompt = primeType === 'scarcity' ?
+    `From your list, select the top two actions you’d try first.` :
+    `From your list, select the top two tasks you would do first.`;
+  document.getElementById('prioritisePrompt').innerHTML = prompt;
+  let options = document.getElementById('optiongen').value.split('\n').filter(t => t.trim());
+  optionList = options;
+  let html = '';
+  options.forEach((opt, i) => {
+    html += `<label class="multi-select"><input type="checkbox" name="prioritise_opt" value="${opt.replace(/"/g,"'")}" onchange="limitPrioritise(this)"> ${opt}</label><br>`;
+  });
+  document.getElementById('prioritiseOptions').innerHTML = html;
+}
+function limitPrioritise(el) {
+  let checked = Array.from(document.querySelectorAll('input[name="prioritise_opt"]:checked'));
+  if(checked.length > 2) { el.checked = false; }
+}
+function setBudget() {
+  let title = primeType === 'scarcity' ? 'Budget Reconciliation' : 'Task Allocation';
+  document.getElementById('budgetTitle').innerText = title;
+  let prompt = primeType === 'scarcity' ?
+    `Payday is 5 days away.<br>
+You have R300 left for the month.<br>
+Upcoming bills:<br>
+• School fee: R500 (due in 5 days)<br>
+• Electricity: R200 (due in 3 days)<br>
+• Transport: R120 (due in 3 days)<br>
+Split your R300 between:<br>
+• School fee (R ___)<br>
+• Electricity (R ___)<br>
+• Transport (R ___)<br>
+• Food (R ___)<br>
+• Other essentials (e.g. airtime, toiletries, medicine) (R ___)<br>
+Total must equal R300.` :
+    `You have 4 days to prepare for the community event. Please allocate your time and effort (100 points total) across the following categories:<br>
+• Logistics (chairs, venue)<br>
+• Catering (vendors, food)<br>
+• Publicity (posters, social media)<br>
+• Volunteer coordination<br>
+• Other (please specify)<br>
+Constraint: total must equal 100 before continuing.`;
+  document.getElementById('budgetPrompt').innerHTML = prompt;
+  let sliders = primeType === 'scarcity' ?
+    [
+      {name: 'School fee', id:'school', min:0, max:300, val:0},
+      {name: 'Electricity', id:'electricity', min:0, max:300, val:0},
+      {name: 'Transport', id:'transport', min:0, max:300, val:0},
+      {name: 'Food', id:'food', min:0, max:300, val:0},
+      {name: 'Other essentials', id:'other', min:0, max:300, val:0}
+    ] :
+    [
+      {name: 'Logistics', id:'logistics', min:0, max:100, val:0},
+      {name: 'Catering', id:'catering', min:0, max:100, val:0},
+      {name: 'Publicity', id:'publicity', min:0, max:100, val:0},
+      {name: 'Volunteer coordination', id:'volunteer', min:0, max:100, val:0},
+      {name: 'Other', id:'other', min:0, max:100, val:0}
+    ];
+  let html = '';
+  sliders.forEach(sl => {
+    html += `<div class="question"><label>${sl.name}: <span id="${sl.id}_val" class="slider-value">${sl.val}</span></label>
+    <input type="range" id="${sl.id}" name="${sl.id}" min="${sl.min}" max="${sl.max}" value="0"
+      oninput="budgetSliderChange('${sl.id}',${sliders.length},${primeType==='scarcity'?300:100})"></div>`;
+  });
+  document.getElementById('budgetSliders').innerHTML = html;
+  budgetState = { sliders: {}, total: 0, moves: 0, revisions: 0, start: Date.now() };
+  document.getElementById('budgetContinue').disabled = true;
+}
+function budgetSliderChange(id,num,max) {
+  budgetState.moves += 1;
+  budgetState.sliders[id] = Number(document.getElementById(id).value);
+  let sum = Object.values(budgetState.sliders).reduce((a,b)=>a+b,0);
+  document.getElementById('budgetError').classList.add('hidden');
+  document.getElementById(id+'_val').innerText = document.getElementById(id).value;
+  if(sum === max) {
+    document.getElementById('budgetContinue').disabled = false;
+  } else {
+    document.getElementById('budgetContinue').disabled = true;
+    document.getElementById('budgetError').classList.remove('hidden');
+    document.getElementById('budgetError').innerText = `Please make sure the total equals ${max} to continue.`;
+  }
+}
+function setTradeoff() {
+  let prompt = primeType === 'scarcity' ?
+    `Which single category would you cut first if necessary?` :
+    `If you could only focus on one category first, which would it be?`;
+  document.getElementById('tradeoffPrompt').innerHTML = prompt;
+  let opts = primeType === 'scarcity' ?
+    ['School fee','Electricity','Transport','Food','Other essentials'] :
+    ['Logistics','Catering','Publicity','Volunteer coordination','Other'];
+  let html = '';
+  opts.forEach(opt => {
+    html += `<label><input type="radio" name="tradeoff_opt" value="${opt}" required class="radio"> ${opt}</label><br>`;
+  });
+  document.getElementById('tradeoffOptions').innerHTML = html;
+}
+function setManipCheck() {
+  let manipHtml = '';
+  if(primeType === 'scarcity') {
+    manipHtml += `
+      <div class="question"><label>Right now I feel financially squeezed. <span id="squeezeVal" class="slider-value">50</span></label>
+      <input type="range" name="squeeze_slider" min="0" max="100" value="50" oninput="document.getElementById('squeezeVal').innerText=this.value;"></div>
+      <div class="question"><label>I am thinking about how to make money stretch. <span id="stretchVal" class="slider-value">50</span></label>
+      <input type="range" name="stretch_slider" min="0" max="100" value="50" oninput="document.getElementById('stretchVal').innerText=this.value;"></div>
+      <div class="question"><label>I feel in control of my money situation right now.</label>
+        <select name="affect_control" required>
+          <option value="">Select...</option>
+          <option>Strongly disagree</option>
+          <option>Disagree</option>
+          <option>Neutral</option>
+          <option>Agree</option>
+          <option>Strongly agree</option>
+        </select>
+      </div>
+      <div class="question"><label>Unexpected expenses would be hard for me to handle today.</label>
+        <select name="affect_expense" required>
+          <option value="">Select...</option>
+          <option>Strongly disagree</option>
+          <option>Disagree</option>
+          <option>Neutral</option>
+          <option>Agree</option>
+          <option>Strongly agree</option>
+        </select>
+      </div>
+      <div class="question"><label>My mind keeps returning to money issues.</label>
+        <select name="affect_mind" required>
+          <option value="">Select...</option>
+          <option>Strongly disagree</option>
+          <option>Disagree</option>
+          <option>Neutral</option>
+          <option>Agree</option>
+          <option>Strongly agree</option>
+        </select>
+      </div>
+      <div class="question"><label>I could cover a R2000 expense in the next 48 hours without missing essentials. (1 definitely no – 7 definitely yes)</label>
+        <input type="range" name="liquidity_slider" min="1" max="7" value="4">
+      </div>
+    `;
+  } else {
+    manipHtml += `
+      <div class="question"><label>Right now I feel focused on event planning. <span id="focusVal" class="slider-value">50</span></label>
+      <input type="range" name="focus_slider" min="0" max="100" value="50" oninput="document.getElementById('focusVal').innerText=this.value;"></div>
+      <div class="question"><label>I am thinking about how to make sure tasks are completed on time. <span id="tasksVal" class="slider-value">50</span></label>
+      <input type="range" name="tasks_slider" min="0" max="100" value="50" oninput="document.getElementById('tasksVal').innerText=this.value;"></div>
+      <div class="question"><label>I feel in control of this planning situation.</label>
+        <select name="affect_control" required>
+          <option value="">Select...</option>
+          <option>Strongly disagree</option>
+          <option>Disagree</option>
+          <option>Neutral</option>
+          <option>Agree</option>
+          <option>Strongly agree</option>
+        </select>
+      </div>
+      <div class="question"><label>Unexpected scheduling changes would be hard for me to handle.</label>
+        <select name="affect_expense" required>
+          <option value="">Select...</option>
+          <option>Strongly disagree</option>
+          <option>Disagree</option>
+          <option>Neutral</option>
+          <option>Agree</option>
+          <option>Strongly agree</option>
+        </select>
+      </div>
+      <div class="question"><label>My mind keeps returning to the event checklist.</label>
+        <select name="affect_mind" required>
+          <option value="">Select...</option>
+          <option>Strongly disagree</option>
+          <option>Disagree</option>
+          <option>Neutral</option>
+          <option>Agree</option>
+          <option>Strongly agree</option>
+        </select>
+      </div>
+      <div class="question"><label>I feel engaged.</label>
+        <select name="affect_tense" required>
+          <option value="">Select...</option>
+          <option>Strongly disagree</option>
+          <option>Disagree</option>
+          <option>Neutral</option>
+          <option>Agree</option>
+          <option>Strongly agree</option>
+        </select>
+      </div>
+    `;
+  }
+  document.getElementById('manipPrompt').innerHTML = manipHtml;
+  document.getElementById('manipExtra').innerHTML = `<div class="question"><b>Digit-Span Hold:</b> Remember <span style="color:#099;font-weight:bold">${digitSpan}</span> while completing the next page.</div>`;
+}
+function setCogLoad() {
+  document.getElementById('cogloadPrompt').innerHTML = `<div><label>Did you remember the number from the previous page?</label><br><span style="color:#099;font-weight:bold">${digitSpan}</span></div>`;
+}
+function setIntervention() {
+  let prompts = {
+    A: `<b>Split-Payout Framing</b><br>For the next 30 days, imagine your income is paid in two equal payouts: one now and one in two weeks. Essential debits (electricity, transport) are auto-reserved from each payout. You can still spend freely, but balances refresh mid-month.<br>
+      <b>Micro-task:</b> List two pros and one con of split payouts; which categories would you pre-reserve?<br>
+      <textarea name="intervention_A" required></textarea>`,
+    B: `<b>Envelope/Default Budgeting</b><br>Show four default envelopes (Food, Electricity, Transport, Essentials) with suggested amounts (e.g., R120/R60/R60/R60). Participant can adjust, but must justify reductions to Essentials.<br>
+      <b>Lock 20% for mid-month release?</b> <select name="intervention_B_lock" required><option value="">Select...</option><option>Yes</option><option>No</option></select><br>
+      <textarea name="intervention_B" required></textarea>`,
+    C: `<b>Commitment Device / Goal Shield</b><br>Set a small goal lock (e.g., R60) that only releases after 10 days or for pre-approved expenses (food/electricity). You can cancel, but you’ll see a reminder of your goal.<br>
+      <label>Lock amount (0–60): <input type="number" min="0" max="60" name="intervention_C_amt" required></label><br>
+      <textarea name="intervention_C" maxlength="100" required placeholder="Reason (100 chars max)"></textarea>`,
+    D: `<b>Brief Stress Buffer</b><br>Pick one: Guided breathing (4-7-8) with on-screen timer; or Support recall prompt (“write about a person who supports you and what they’d advise today”).<br>
+      <label><input type="radio" name="intervention_D_opt" value="breathing" required> Guided breathing<br>
+      <input type="radio" name="intervention_D_opt" value="support"> Support recall</label><br>
+      <textarea name="intervention_D" required></textarea>`,
+    E: `<b>Voucher Scenario</b><br>It’s payday and you get R1000.<br>
+Instead of all cash, part may come as vouchers for essentials (food, electricity, school fees). Vouchers can only be used for these items; cash can be used for anything.<br>
+Example: R500 vouchers + R500 cash.<br>
+Which do you prefer? (choice selection)<br>
+<label><input type="radio" name="intervention_E_opt" value="vouchers" required> Essentials covered automatically (vouchers + cash)</label>
+<label><input type="radio" name="intervention_E_opt" value="cash" required> Full control (all cash, you decide how to spend)</label><br>
+<textarea name="intervention_E" required></textarea>`
+  };
+  document.getElementById('interventionPrompt').innerHTML = prompts[interventionType];
+  document.getElementById('interventionTask').innerHTML = '';
+}
+function setDebrief() {
+  let txt = primeType === 'scarcity' ?
+    `Earlier, you read a scenario designed to make budget constraints feel vivid. This helps us study how the effects of financial stress may affect decision making. Your responses are confidential, thank you for taking part in the survey.` :
+    `You were asked to complete a neutral planning task. This provides a comparison group for our study of how different planning scenarios may influence decision-making.`;
+  document.getElementById('debriefPrompt').innerHTML = `<div class="debrief">${txt}</div>`;
+}
+document.getElementById('surveyForm').onsubmit = function(e){
+  e.preventDefault();
+  showSection('end');
+};
+function showOtherIncome(sel) {
+  let txt = document.getElementById('otherIncome');
+  if(sel.value === 'Other') txt.classList.remove('hidden');
+  else txt.classList.add('hidden');
+}
+function toggleDistressText(sel) {
+  let el = document.getElementById('distressExplain');
+  if(sel.value === 'Yes') el.classList.remove('hidden');
+  else el.classList.add('hidden');
+}
+</script>
+</body>
+</html>

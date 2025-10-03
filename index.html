@@ -28,6 +28,29 @@
     .bold { font-weight: bold;}
   </style>
 </head>
+<script src="https://webgazer.cs.brown.edu/webgazer.js"></script>
+<script>
+  // Start WebGazer on page load
+  window.onload = function() {
+    webgazer.setRegression('ridge').begin();
+    // Optional: Hide the face overlay
+    webgazer.showVideoPreview(false).showPredictionPoints(false).showFaceOverlay(false);
+  };
+  // Example: get gaze prediction
+  setInterval(() => {
+    webgazer.getCurrentPrediction().then(pos => {
+      // pos.x, pos.y: gaze coordinates
+      // Store or send this data as needed
+    });
+  }, 1000); // every second
+</script>
+  <script>
+  document.addEventListener('mousemove', function(e){
+    // e.clientX, e.clientY: cursor coordinates
+    // Store or send this data as needed
+  });
+</script>
+  
 <body>
 <div class="container">
   <form id="surveyForm" autocomplete="off">
@@ -650,6 +673,19 @@ function setDebrief() {
 }
 document.getElementById('surveyForm').onsubmit = function(e){
   e.preventDefault();
+
+  // Collect form data
+  const formData = new FormData(document.getElementById('surveyForm'));
+  const data = {};
+  formData.forEach((value, key) => { data[key] = value; });
+
+  // Send to Google Sheets
+  fetch('https://script.google.com/macros/s/AKfycbxSfOEZUYShXpCxJx08bdKFgjC97AdATD0ybzPFu69eyGyT-jnWvXinEwUmhClStGkqkQ/exec', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {'Content-Type': 'application/json'}
+  });
+
   showSection('end');
 };
 function showOtherIncome(sel) {

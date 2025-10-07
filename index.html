@@ -671,23 +671,88 @@ function setDebrief() {
     `You were asked to complete a neutral planning task. This provides a comparison group for our study of how different planning scenarios may influence decision-making.`;
   document.getElementById('debriefPrompt').innerHTML = `<div class="debrief">${txt}</div>`;
 }
+<script>
+// === CONFIGURATION ===
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3np6huEVY5pynk47m4hGiZYxO6qIlTLqQ0GWdTgxhooSs5ptAUgvaqwqBpuEJCScN1A/exec';
+
+// === Data Collection Arrays ===
+let webgazerData = []; // Fill this with {page, t, x, y}
+let mouseData = [];    // Fill this with {page, t, x, y}
+let currentPage = "";  // Track the current page/section
+
+// === OPTIONAL: Update currentPage when showing sections ===
+function setCurrentPage(section) {
+  currentPage = section;
+}
+
+// === Mouse Tracking Example ===
+document.addEventListener('mousemove', function(e) {
+  if (currentPage) {
+    mouseData.push({
+      page: currentPage,
+      t: Date.now(),
+      x: e.clientX,
+      y: e.clientY
+    });
+  }
+});
+
+// === WebGazer Tracking Example ===
+if (window.webgazer) {
+  setInterval(() => {
+    if (currentPage && webgazer.getCurrentPrediction) {
+      webgazer.getCurrentPrediction().then(pos => {
+        if (pos) webgazerData.push({
+          page: currentPage,
+          t: Date.now(),
+          x: pos.x,
+          y: pos.y
+        });
+      });
+    }
+  }, 1000); // every second
+}
+
+// === On survey submit, send data ===
 document.getElementById('surveyForm').onsubmit = function(e){
   e.preventDefault();
 
-  // Collect form data
+  // Collect all form results
   const formData = new FormData(document.getElementById('surveyForm'));
-  const data = {};
-  formData.forEach((value, key) => { data[key] = value; });
+  const resultsObj = {};
+  formData.forEach((value, key) => { resultsObj[key] = value; });
 
-  // Send to Google Sheets
-  fetch('https://script.google.com/macros/s/AKfycbwMSrdVOAj3P2NvJYcU0jMUkAfHEcZ4obdFPVbBCGmzKRk1574YzLzzCwATh2D307jAwg/exec', {
+  // Assemble payload
+  const payload = {
+    results: resultsObj,
+    webgazer: webgazerData,
+    mousetracking: mouseData
+  };
+
+  // POST to Google Apps Script
+  fetch(GOOGLE_SCRIPT_URL, {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: JSON.stringify(payload),
     headers: {'Content-Type': 'application/json'}
+  })
+  .then(response => response.text())
+  .then(data => {
+    // Optionally, handle success (show thank you, etc)
+    showSection('end');
+  })
+  .catch(err => {
+    alert('There was a problem saving your data. Please try again.');
+    // Optionally, handle error or retry
   });
-
-  showSection('end');
 };
+
+// === Example: Call setCurrentPage whenever you show a new section ===
+// function showSection(sec) {
+//   // ... your code ...
+//   setCurrentPage(sec);
+// }
+  
+</script>
 function showOtherIncome(sel) {
   let txt = document.getElementById('otherIncome');
   if(sel.value === 'Other') txt.classList.remove('hidden');

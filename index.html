@@ -29,6 +29,7 @@
   </style>
 </head>
 <script src="https://webgazer.cs.brown.edu/webgazer.js"></script>
+<script>
   // Start WebGazer on page load
   window.onload = function() {
     webgazer.setRegression('ridge').begin();
@@ -42,10 +43,14 @@
       // Store or send this data as needed
     });
   }, 1000); // every second
+</script>
+  <script>
   document.addEventListener('mousemove', function(e){
     // e.clientX, e.clientY: cursor coordinates
     // Store or send this data as needed
-  });  
+  });
+</script>
+  
 <body>
 <div class="container">
   <form id="surveyForm" autocomplete="off">
@@ -666,89 +671,23 @@ function setDebrief() {
     `You were asked to complete a neutral planning task. This provides a comparison group for our study of how different planning scenarios may influence decision-making.`;
   document.getElementById('debriefPrompt').innerHTML = `<div class="debrief">${txt}</div>`;
 }
-<script>
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3np6huEVY5pynk47m4hGiZYxO6qIlTLqQ0GWdTgxhooSs5ptAUgvaqwqBpuEJCScN1A/exec';
-
-// Data Collection Arrays
-let webgazerData = [];
-let mouseData = [];
-let currentPage = "";
-
-// Track the current page/section
-function setCurrentPage(section) {
-  currentPage = section;
-}
-
-// Mouse Tracking
-document.addEventListener('mousemove', function(e) {
-  if (currentPage) {
-    mouseData.push({
-      page: currentPage,
-      t: Date.now(),
-      x: e.clientX,
-      y: e.clientY
-    });
-  }
-});
-// WebGazer Tracking
-window.onload = function() {
-  if (window.webgazer) {
-    webgazer.setRegression('ridge').begin();
-    webgazer.showVideoPreview(false).showPredictionPoints(false).showFaceOverlay(false);
-    setInterval(() => {
-      if (currentPage && webgazer.getCurrentPrediction) {
-        webgazer.getCurrentPrediction().then(pos => {
-          if (pos) webgazerData.push({
-            page: currentPage,
-            t: Date.now(),
-            x: pos.x,
-            y: pos.y
-          });
-        });
-      }
-    }, 1000);
-  }
-};
-
-// Patch showSection to also set currentPage
-const origShowSection = showSection;
-showSection = function(sec) {
-  if (typeof origShowSection === "function") origShowSection(sec);
-  setCurrentPage(sec);
-};
-
-// On survey submit, send data
 document.getElementById('surveyForm').onsubmit = function(e){
   e.preventDefault();
 
-  // Collect all form results
+  // Collect form data
   const formData = new FormData(document.getElementById('surveyForm'));
-  const resultsObj = {};
-  formData.forEach((value, key) => { resultsObj[key] = value; });
+  const data = {};
+  formData.forEach((value, key) => { data[key] = value; });
 
-  // Assemble payload
-  const payload = {
-    results: resultsObj,
-    webgazer: webgazerData,
-    mousetracking: mouseData
-  };
-
-  // POST to Google Apps Script
-  fetch(GOOGLE_SCRIPT_URL, {
+  // Send to Google Sheets
+  fetch('https://script.google.com/macros/s/AKfycbwMSrdVOAj3P2NvJYcU0jMUkAfHEcZ4obdFPVbBCGmzKRk1574YzLzzCwATh2D307jAwg/exec', {
     method: 'POST',
-    body: JSON.stringify(payload),
+    body: JSON.stringify(data),
     headers: {'Content-Type': 'application/json'}
-  })
-  .then(response => response.text())
-  .then(data => {
-    showSection('end');
-  })
-  .catch(err => {
-    alert('There was a problem saving your data. Please try again.');
   });
-};
 
-// Show/hide fields helpers
+  showSection('end');
+};
 function showOtherIncome(sel) {
   let txt = document.getElementById('otherIncome');
   if(sel.value === 'Other') txt.classList.remove('hidden');

@@ -536,6 +536,11 @@
       if (n === 4) startTimer4();
       if (n === 5) startTimer5();
       if (n === 6) updateActionSelection();
+      
+      // Auto-submit when on the last screen
+  if (n === 12) {
+    submitSurvey();
+  }
     }
     function nextScreen() {
       if (currentScreen === 4) {
@@ -638,6 +643,22 @@
 function collectSurveyData() {
   const form = document.getElementById('surveyForm');
   const data = {};
+
+  function submitPartialSurveyOnExit() {
+  const data = collectSurveyData();
+  data.partial = true;
+  data.screenWhenExited = currentScreen;
+  // Optionally add a timestamp
+  data.timestamp = new Date().toISOString();
+  // Set consent logic if appropriate
+  data.consent = (currentScreen > 1);
+  if (navigator.sendBeacon) {
+    const blob = new Blob([JSON.stringify(data)], {type : 'application/json'});
+    navigator.sendBeacon(ENDPOINT_URL, blob);
+  }
+}
+
+window.addEventListener("beforeunload", submitPartialSurveyOnExit);
 
   // Warm-up fields
   data.stressSlider = form.stressSlider.value;

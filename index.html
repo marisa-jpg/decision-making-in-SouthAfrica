@@ -536,12 +536,10 @@
       if (n === 4) startTimer4();
       if (n === 5) startTimer5();
       if (n === 6) updateActionSelection();
-      
-      // Auto-submit when on the last screen
-  if (n === 12) {
+      if (n === 12) {
     submitSurvey();
   }
-    }
+}
     function nextScreen() {
       if (currentScreen === 4) {
         if (!compCheckPassed()) {
@@ -655,6 +653,7 @@ function submitPartialSurveyOnExit() {
   if (navigator.sendBeacon) {
     const blob = new Blob([JSON.stringify(data)], {type : 'application/json'});
     navigator.sendBeacon(ENDPOINT_URL, blob);
+  }
 }
 
 window.addEventListener("beforeunload", submitPartialSurveyOnExit);
@@ -771,14 +770,14 @@ function submitSurvey(partial = false) {
 
 // Add to your "End of Survey" screen logic:
 document.addEventListener('DOMContentLoaded', function() {
-  // ...existing code...
-  // Add handler for survey submission
-  const lastScreen = document.getElementById('screen-12');
-  if (lastScreen) {
-    lastScreen.insertAdjacentHTML('beforeend',
-      `<div class="btn-row"><button type="button" onclick="submitSurvey()">Submit Survey</button></div>`);
-  }
+  showScreen(1);
+  document.getElementById('distressSelect').addEventListener('change', function() {
+    let v = this.value;
+    document.getElementById('distressExplainDiv').classList.toggle('hidden', v !== 'Yes');
+    document.getElementById('distressExplain').required = v === 'Yes';
+  });
 });
 </script>
+
 </body>
 </html>

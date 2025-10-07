@@ -29,7 +29,6 @@
   </style>
 </head>
 <script src="https://webgazer.cs.brown.edu/webgazer.js"></script>
-<script>
   // Start WebGazer on page load
   window.onload = function() {
     webgazer.setRegression('ridge').begin();
@@ -43,14 +42,10 @@
       // Store or send this data as needed
     });
   }, 1000); // every second
-</script>
-  <script>
   document.addEventListener('mousemove', function(e){
     // e.clientX, e.clientY: cursor coordinates
     // Store or send this data as needed
-  });
-</script>
-  
+  });  
 <body>
 <div class="container">
   <form id="surveyForm" autocomplete="off">

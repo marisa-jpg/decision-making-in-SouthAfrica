@@ -655,7 +655,6 @@ function submitPartialSurveyOnExit() {
   if (navigator.sendBeacon) {
     const blob = new Blob([JSON.stringify(data)], {type : 'application/json'});
     navigator.sendBeacon(ENDPOINT_URL, blob);
-  }
 }
 
 window.addEventListener("beforeunload", submitPartialSurveyOnExit);

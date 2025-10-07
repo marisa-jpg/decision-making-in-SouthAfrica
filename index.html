@@ -703,9 +703,14 @@ function collectSurveyData() {
   return data;
 }
 
-// Call this when the survey ends (on screen 12)
-function submitSurvey() {
+function submitSurvey(partial = false) {
   const data = collectSurveyData();
+  if (partial) {
+    data.partial = true;
+    data.consent = false;
+  } else {
+    data.consent = true;
+  }
   fetch(ENDPOINT_URL, {
     method: "POST",
     body: JSON.stringify(data),
@@ -713,10 +718,11 @@ function submitSurvey() {
   })
   .then(res => res.json())
   .then(res => {
-    alert("Survey submitted! Thank you.");
+    if (!partial) alert("Survey submitted! Thank you.");
   })
   .catch(err => {
-    alert("Sorry, there was a problem submitting your survey.");
+    if (!partial) alert("Sorry, there was a problem submitting your survey.");
+    console.error(err);
   });
 }
 

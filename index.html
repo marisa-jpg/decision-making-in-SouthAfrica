@@ -637,20 +637,20 @@
         document.getElementById('distressExplain').required = v === 'Yes';
       });
     });
-  const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwHGKvYVgMmK1hMgby_PPGSkhy0rlUQ1pXhK1Ghdewt5H1As6kSPYi--uAqoxMT5zrVUA/exec";
+const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwHGKvYVgMmK1hMgby_PPGSkhy0rlUQ1pXhK1Ghdewt5H1As6kSPYi--uAqoxMT5zrVUA/exec";
 
-// Helper: collect form data into an object
 function collectSurveyData() {
   const form = document.getElementById('surveyForm');
   const data = {};
+  // ... all your data extraction code here ...
+  return data;
+}
 
-  function submitPartialSurveyOnExit() {
+function submitPartialSurveyOnExit() {
   const data = collectSurveyData();
   data.partial = true;
   data.screenWhenExited = currentScreen;
-  // Optionally add a timestamp
   data.timestamp = new Date().toISOString();
-  // Set consent logic if appropriate
   data.consent = (currentScreen > 1);
   if (navigator.sendBeacon) {
     const blob = new Blob([JSON.stringify(data)], {type : 'application/json'});
@@ -659,6 +659,29 @@ function collectSurveyData() {
 }
 
 window.addEventListener("beforeunload", submitPartialSurveyOnExit);
+
+function submitSurvey(partial = false) {
+  const data = collectSurveyData();
+  if (partial) {
+    data.partial = true;
+    data.consent = false;
+  } else {
+    data.consent = true;
+  }
+  fetch(ENDPOINT_URL, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {"Content-Type": "application/json"}
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (!partial) alert("Survey submitted! Thank you.");
+  })
+  .catch(err => {
+    if (!partial) alert("Sorry, there was a problem submitting your survey.");
+    console.error(err);
+  });
+}
 
   // Warm-up fields
   data.stressSlider = form.stressSlider.value;

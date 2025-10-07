@@ -672,20 +672,19 @@ function setDebrief() {
   document.getElementById('debriefPrompt').innerHTML = `<div class="debrief">${txt}</div>`;
 }
 <script>
-// === CONFIGURATION ===
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby3np6huEVY5pynk47m4hGiZYxO6qIlTLqQ0GWdTgxhooSs5ptAUgvaqwqBpuEJCScN1A/exec';
 
-// === Data Collection Arrays ===
-let webgazerData = []; // Fill this with {page, t, x, y}
-let mouseData = [];    // Fill this with {page, t, x, y}
-let currentPage = "";  // Track the current page/section
+// Data Collection Arrays
+let webgazerData = [];
+let mouseData = [];
+let currentPage = "";
 
-// === OPTIONAL: Update currentPage when showing sections ===
+// Track the current page/section
 function setCurrentPage(section) {
   currentPage = section;
 }
 
-// === Mouse Tracking Example ===
+// Mouse Tracking
 document.addEventListener('mousemove', function(e) {
   if (currentPage) {
     mouseData.push({
@@ -697,7 +696,7 @@ document.addEventListener('mousemove', function(e) {
   }
 });
 
-// === WebGazer Tracking Example ===
+// WebGazer Tracking
 if (window.webgazer) {
   setInterval(() => {
     if (currentPage && webgazer.getCurrentPrediction) {
@@ -710,10 +709,17 @@ if (window.webgazer) {
         });
       });
     }
-  }, 1000); // every second
+  }, 1000);
 }
 
-// === On survey submit, send data ===
+// ---- PATCH: Update showSection to track current page ----
+const origShowSection = showSection;
+showSection = function(sec) {
+  if (typeof origShowSection === "function") origShowSection(sec);
+  setCurrentPage(sec);
+};
+
+// On survey submit, send data
 document.getElementById('surveyForm').onsubmit = function(e){
   e.preventDefault();
 
@@ -742,17 +748,10 @@ document.getElementById('surveyForm').onsubmit = function(e){
   })
   .catch(err => {
     alert('There was a problem saving your data. Please try again.');
-    // Optionally, handle error or retry
   });
 };
 
-// === Example: Call setCurrentPage whenever you show a new section ===
-// function showSection(sec) {
-//   // ... your code ...
-//   setCurrentPage(sec);
-// }
-  
-</script>
+// Show/hide fields helpers
 function showOtherIncome(sel) {
   let txt = document.getElementById('otherIncome');
   if(sel.value === 'Other') txt.classList.remove('hidden');

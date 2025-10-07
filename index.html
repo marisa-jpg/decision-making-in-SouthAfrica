@@ -634,5 +634,105 @@
       });
     });
   </script>
+
+  const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwHGKvYVgMmK1hMgby_PPGSkhy0rlUQ1pXhK1Ghdewt5H1As6kSPYi--uAqoxMT5zrVUA/exec";
+
+// Helper: collect form data into an object
+function collectSurveyData() {
+  const form = document.getElementById('surveyForm');
+  const data = {};
+
+  // Warm-up fields
+  data.stressSlider = form.stressSlider.value;
+  data.worryFrequency = form.worryFrequency.value;
+  data.incomeConfidence = form.incomeConfidence.value;
+  data.latePayFrequency = form.latePayFrequency.value;
+  data.supportCount = form.supportCount.value;
+
+  // About you
+  data.liveInSA = form.liveInSA.value;
+  data.age = form.age.value;
+  data.gender = form.gender.value;
+  data.education = form.education.value;
+  data.incomeRange = form.incomeRange.value;
+  data.incomeSource = form.incomeSource.value;
+
+  // Comprehension check
+  data.compQ1 = document.getElementById('compQ1').value;
+  data.compQ2 = document.getElementById('compQ2').value;
+
+  // Option Generation
+  data.actionList = form.actionList.value;
+
+  // Prioritisation
+  let selected = [];
+  document.querySelectorAll('#actionSelectList input[type=checkbox]:checked').forEach(cb => {
+    selected.push(cb.parentNode.textContent.trim());
+  });
+  data.selectedActions = selected.join(' | ');
+  data.prioritiseReason = form.prioritiseReason.value;
+
+  // Scarcity & Checks
+  data.scarcityFeel = form.scarcityFeel.value;
+  data.controlFeel = form.controlFeel.value;
+  data.liquidityFeel = form.liquidityFeel.value;
+  data.attentionCheck = form.attentionCheck.value;
+
+  // Split-Payout Framing
+  let splitFraming = document.querySelectorAll('#screen-8 select');
+  data.splitPayoutFraming1 = splitFraming[0]?.value;
+  data.splitPayoutFraming2 = splitFraming[1]?.value;
+  data.splitPayoutFraming3 = splitFraming[2]?.value;
+  data.splitPayoutFraming4 = splitFraming[3]?.value;
+  data.essentialCategories = document.querySelector('#screen-8 input[type=text]')?.value;
+
+  // Envelope/Default Budgeting
+  let envelopeQs = document.querySelectorAll('#screen-9 select');
+  data.envelopeBudgeting1 = envelopeQs[0]?.value;
+  data.envelopeBudgeting2 = envelopeQs[1]?.value;
+  data.envelopeBudgeting3 = envelopeQs[2]?.value;
+
+  // Commitment Device / Goal Shield
+  let shieldQs = document.querySelectorAll('#screen-10 select');
+  data.commitmentDevice1 = shieldQs[0]?.value;
+  data.commitmentDevice2 = shieldQs[1]?.value;
+  data.commitmentDevice3 = shieldQs[2]?.value;
+  data.shieldGoals = document.querySelector('#screen-10 input[type=text]')?.value;
+
+  // Distress check
+  data.distress = form.distress?.value;
+  data.distressExplain = form.distressExplain?.value;
+
+  return data;
+}
+
+// Call this when the survey ends (on screen 12)
+function submitSurvey() {
+  const data = collectSurveyData();
+  fetch(ENDPOINT_URL, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {"Content-Type": "application/json"}
+  })
+  .then(res => res.json())
+  .then(res => {
+    alert("Survey submitted! Thank you.");
+  })
+  .catch(err => {
+    alert("Sorry, there was a problem submitting your survey.");
+  });
+}
+
+// Add to your "End of Survey" screen logic:
+document.addEventListener('DOMContentLoaded', function() {
+  // ...existing code...
+  // Add handler for survey submission
+  const lastScreen = document.getElementById('screen-12');
+  if (lastScreen) {
+    lastScreen.insertAdjacentHTML('beforeend',
+      `<div class="btn-row"><button type="button" onclick="submitSurvey()">Submit Survey</button></div>`);
+  }
+});
+</script>
 </body>
 </html>

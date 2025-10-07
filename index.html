@@ -690,24 +690,27 @@ document.addEventListener('mousemove', function(e) {
     });
   }
 });
-
 // WebGazer Tracking
-if (window.webgazer) {
-  setInterval(() => {
-    if (currentPage && webgazer.getCurrentPrediction) {
-      webgazer.getCurrentPrediction().then(pos => {
-        if (pos) webgazerData.push({
-          page: currentPage,
-          t: Date.now(),
-          x: pos.x,
-          y: pos.y
+window.onload = function() {
+  if (window.webgazer) {
+    webgazer.setRegression('ridge').begin();
+    webgazer.showVideoPreview(false).showPredictionPoints(false).showFaceOverlay(false);
+    setInterval(() => {
+      if (currentPage && webgazer.getCurrentPrediction) {
+        webgazer.getCurrentPrediction().then(pos => {
+          if (pos) webgazerData.push({
+            page: currentPage,
+            t: Date.now(),
+            x: pos.x,
+            y: pos.y
+          });
         });
-      });
-    }
-  }, 1000);
-}
+      }
+    }, 1000);
+  }
+};
 
-// ---- PATCH: Update showSection to track current page ----
+// Patch showSection to also set currentPage
 const origShowSection = showSection;
 showSection = function(sec) {
   if (typeof origShowSection === "function") origShowSection(sec);
@@ -738,7 +741,6 @@ document.getElementById('surveyForm').onsubmit = function(e){
   })
   .then(response => response.text())
   .then(data => {
-    // Optionally, handle success (show thank you, etc)
     showSection('end');
   })
   .catch(err => {

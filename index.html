@@ -519,123 +519,10 @@
       <p>You have exited the survey. No data has been saved.</p>
     </div>
   </div>
+
   <script>
-    let currentScreen = 1;
-    const totalScreens = 12;
-    let actionLines = [];
-    // Timers
-    let timer4Interval = null;
-    let timer5Interval = null;
-
-    function showScreen(n) {
-      document.querySelectorAll('.survey-screen').forEach(el => el.classList.add('hidden'));
-      const screen = document.getElementById('screen-' + n);
-      if (screen) screen.classList.remove('hidden');
-      document.getElementById('progressBar').style.width = (n*100/totalScreens) + "%";
-      currentScreen = n;
-      if (n === 4) startTimer4();
-      if (n === 5) startTimer5();
-      if (n === 6) updateActionSelection();
-      if (n === 12) {
-    submitSurvey();
-  }
-}
-    function nextScreen() {
-      if (currentScreen === 4) {
-        if (!compCheckPassed()) {
-          document.getElementById('compError').style.display = "block";
-          return;
-        }
-      }
-      if (currentScreen === 5) {
-        let val = document.getElementById('actionList').value.trim();
-        actionLines = val.split('\n').map(l=>l.trim()).filter(l=>l);
-      }
-      if (currentScreen < totalScreens) showScreen(currentScreen+1);
-    }
-    function exitSurvey() {
-      document.getElementById('surveyForm').classList.add('hidden');
-      document.getElementById('exitMsg').classList.remove('hidden');
-    }
-
-    // Timer for screen 4 (20s)
-    function startTimer4() {
-      if (timer4Interval) clearInterval(timer4Interval);
-      let s = 20;
-      document.getElementById('timer4-count').textContent = s;
-      document.getElementById('comprehensionCheck').disabled = true;
-      document.getElementById('compContinue').disabled = true;
-      document.getElementById('timer4').innerHTML = `Reading time: <span id="timer4-count">${s}</span>s`;
-      timer4Interval = setInterval(()=>{
-        s--;
-        document.getElementById('timer4-count').textContent = s;
-        if (s <= 0) {
-          clearInterval(timer4Interval);
-          document.getElementById('timer4').textContent = "You may now answer the comprehension check.";
-          document.getElementById('comprehensionCheck').disabled = false;
-          document.getElementById('compContinue').disabled = false;
-        }
-      }, 1000);
-    }
-    // Timer for screen 5 (30s min)
-    function startTimer5() {
-      if (timer5Interval) clearInterval(timer5Interval);
-      let s = 30;
-      document.getElementById('timer5-count').textContent = s;
-      document.getElementById('optGenContinue').disabled = true;
-      document.getElementById('timer5').innerHTML = `Time remaining: <span id="timer5-count">${s}</span>s`;
-      timer5Interval = setInterval(()=>{
-        s--;
-        document.getElementById('timer5-count').textContent = s;
-        if (s <= 0) {
-          clearInterval(timer5Interval);
-          document.getElementById('optGenContinue').disabled = false;
-          document.getElementById('timer5').textContent = "You may now continue.";
-        }
-      }, 1000);
-    }
-    // Comprehension check logic
-    function compCheckPassed() {
-      let q1 = document.getElementById('compQ1').value, q2 = document.getElementById('compQ2').value;
-      return q1 === "R300" && q2 === "Within 48 hours";
-    }
-    function checkComprehension() {
-      if (compCheckPassed()) {
-        document.getElementById('compError').style.display = "none";
-        nextScreen();
-      } else {
-        document.getElementById('compError').style.display = "block";
-      }
-    }
-    // Populate multi-select for actions on screen 6
-    function updateActionSelection() {
-      let list = document.getElementById('actionSelectList');
-      if (!list) return;
-      list.innerHTML = '';
-      actionLines.forEach((line,i) => {
-        let id = "actionBox"+i;
-        let lbl = document.createElement('label');
-        lbl.innerHTML = `<input type="checkbox" value="${i}" id="${id}">${line}`;
-        list.appendChild(lbl);
-      });
-      // Allow only two selections
-      document.querySelectorAll('#actionSelectList input[type=checkbox]').forEach(cb => {
-        cb.onclick = function() {
-          let boxes = document.querySelectorAll('#actionSelectList input[type=checkbox]:checked');
-          if (boxes.length > 2) this.checked = false;
-        };
-      });
-    }
-    // Debrief distress field logic
-    document.addEventListener('DOMContentLoaded', function() {
-      showScreen(1);
-      document.getElementById('distressSelect').addEventListener('change', function() {
-        let v = this.value;
-        document.getElementById('distressExplainDiv').classList.toggle('hidden', v !== 'Yes');
-        document.getElementById('distressExplain').required = v === 'Yes';
-      });
-    });
-const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwHGKvYVgMmK1hMgby_PPGSkhy0rlUQ1pXhK1Ghdewt5H1As6kSPYi--uAqoxMT5zrVUA/exec";
+    
+  const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwHGKvYVgMmK1hMgby_PPGSkhy0rlUQ1pXhK1Ghdewt5H1As6kSPYi--uAqoxMT5zrVUA/exec";
 
 let currentScreen = 1;
 const totalScreens = 12;
@@ -657,6 +544,7 @@ function showScreen(n) {
     submitSurvey();
   }
 }
+
 function nextScreen() {
   if (currentScreen === 4) {
     if (!compCheckPassed()) {
@@ -670,6 +558,7 @@ function nextScreen() {
   }
   if (currentScreen < totalScreens) showScreen(currentScreen+1);
 }
+
 function exitSurvey() {
   document.getElementById('surveyForm').classList.add('hidden');
   document.getElementById('exitMsg').classList.remove('hidden');
@@ -694,6 +583,7 @@ function startTimer4() {
     }
   }, 1000);
 }
+
 // Timer for screen 5 (30s min)
 function startTimer5() {
   if (timer5Interval) clearInterval(timer5Interval);
@@ -711,11 +601,13 @@ function startTimer5() {
     }
   }, 1000);
 }
+
 // Comprehension check logic
 function compCheckPassed() {
   let q1 = document.getElementById('compQ1').value, q2 = document.getElementById('compQ2').value;
   return q1 === "R300" && q2 === "Within 48 hours";
 }
+
 function checkComprehension() {
   if (compCheckPassed()) {
     document.getElementById('compError').style.display = "none";
@@ -724,6 +616,7 @@ function checkComprehension() {
     document.getElementById('compError').style.display = "block";
   }
 }
+
 // Populate multi-select for actions on screen 6
 function updateActionSelection() {
   let list = document.getElementById('actionSelectList');

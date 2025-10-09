@@ -698,10 +698,10 @@ function submitSurvey(partial = false) {
   }
   fetch(ENDPOINT_URL, {
     method: "POST",
-    body: JSON.stringify(data),
-    headers: {"Content-Type": "application/json"}
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams(data).toString()  // <--- this is key!
   })
-  .then(res => res.json())
+  .then(res => res.text())
   .then(res => {
     if (!partial) alert("Survey submitted! Thank you.");
   })
@@ -717,7 +717,9 @@ function submitPartialSurveyOnExit() {
   data.timestamp = new Date().toISOString();
   data.screenWhenExited = currentScreen;
   if (currentScreen > 1 && navigator.sendBeacon) {
-    const blob = new Blob([JSON.stringify(data)], {type : 'application/json'});
+    // Convert data object to form data
+    const body = new URLSearchParams(data).toString();
+    const blob = new Blob([body], { type: "application/x-www-form-urlencoded" });
     navigator.sendBeacon(ENDPOINT_URL, blob);
   }
 }

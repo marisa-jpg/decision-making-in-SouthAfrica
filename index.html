@@ -146,19 +146,43 @@
     @media (max-width: 800px) {
       .survey-container { padding: 1em; max-width: 99vw;}
     }
-    input[type="range"]{
+   /* Make the Warm-up stress slider span the full form width */
+input[type="range"]{
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0.4rem 0 0.8rem;
+
   -webkit-appearance: none;
-  background: linear-gradient(to right, var(--progress1), var(--progress2));
+  background: transparent; /* track styles are below */
   height: 10px;
   border-radius: 6px;
   outline: none;
 }
+
+/* Track (WebKit: Chrome, Edge, Safari) */
+input[type="range"]::-webkit-slider-runnable-track{
+  height: 10px;
+  border-radius: 6px;
+  background: linear-gradient(to right, var(--progress1), var(--progress2));
+}
+
+/* Track (Firefox) */
+input[type="range"]::-moz-range-track{
+  height: 10px;
+  border-radius: 6px;
+  background: linear-gradient(to right, var(--progress1), var(--progress2));
+}
+
+/* Thumb */
 input[type="range"]::-webkit-slider-thumb{
   -webkit-appearance: none;
   width: 18px; height: 18px; border-radius: 50%;
   background: var(--primary-alt);
   box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--primary-alt);
   cursor: pointer;
+  margin-top: -4px; /* center on the 10px track */
 }
 input[type="range"]::-moz-range-thumb{
   width: 18px; height: 18px; border-radius: 50%;

@@ -73,7 +73,7 @@
       margin: 1rem 0 0.4rem;
       font-weight: 500;
     }
-    input[type="text"], input[type="number"], select, textarea {
+    input[type="text"], input[type="number"], input[type="tel"], select, textarea {
       width: 100%;
       padding: 0.5em;
       border: 1px solid var(--border);
@@ -413,10 +413,11 @@ input[type="range"]::-moz-range-thumb{
       <div class="survey-screen hidden" id="screen-8">
         <h2>Split-Payout Framing</h2>
         <div class="survey-content">
-          <p>Your monthly pay is split into two parts: one now, and one two weeks later.
-            From each part, money for basics like electricity or transport is set aside automatically, so you don’t have to stress about missing them.
-            The rest of your money is still yours to use however you want.
-            This system is meant to make planning easier and help you avoid quick, impulsive spending.
+          <p>Imagine a money system that’s meant to help you — not control you.
+Your monthly pay is split into two parts: one now, and one two weeks later.
+From each part, money for basics like electricity or transport is set aside automatically, so you don’t have to stress about missing them.
+The rest of your money is still yours to use however you want.
+This system is meant to make planning easier and help you avoid quick, impulsive spending.
           </p>
         </div>
         <label>If you were paid in two parts each month, do you think it would help you avoid spending too quickly or make it easier to manage your money through the month?</label>
@@ -462,8 +463,11 @@ input[type="range"]::-moz-range-thumb{
       <div class="survey-screen hidden" id="screen-9">
         <h2>Envelope/Default Budgeting</h2>
         <div class="survey-content">
-          <p>Imagine a budgeting tool designed to support your financial planning by helping you set aside money for your most important needs. This tool starts by suggesting default amounts for key categories, like food, electricity, transport, and other essentials, based on what’s typical for households like yours. You can change these amounts to fit your own situation, and if you want to reduce the amount set aside for essentials, you’ll be asked to briefly explain your choice.</p>
-          <p>You also have the option to “lock” a portion of your budget for release in the middle of the month. This isn’t about limiting your freedom, but about making it easier to stick to your plans and avoid common habits or temptations that can throw off your budget. The aim is to help you make sure your essentials are always covered, even if something unexpected comes up.</p>
+          <p>Imagine a budgeting tool that helps you plan your money and make sure your most important needs are covered.
+        It gives you suggested amounts for things like food, electricity, and transport — based on what’s typical for households like yours. You can adjust these amounts however you like, and if you lower what’s set aside for essentials, you’ll just be asked to say why.
+        <p>
+        You can also choose to “lock” part of your money until the middle of the month. This isn’t about taking away your control — it’s about helping you stick to your plan and avoid quick spending that might cause problems later. The goal is to help you stay on track and know your essentials are always covered, even if something unexpected happens.
+          <p>
         </div>
         <label>I felt in control of my choices while using this budgeting tool.</label>
         <select required>
@@ -501,7 +505,9 @@ input[type="range"]::-moz-range-thumb{
       <div class="survey-screen hidden" id="screen-10">
         <h2>Commitment Device / Goal Shield</h2>
         <div class="survey-content">
-          <p>Imagine you have the option to “shield” a small amount of money (for example, R60) for a period of 10 days. This money can only be used after that period or for specific pre-approved expenses, like food or electricity. You can cancel the shield and access the funds at any time, but you’ll see a reminder of your original savings goal before doing so. This feature is designed to help protect your savings from immediate temptations and support your longer-term financial goals.</p>
+          <p>Imagine you have the option to “shield” a small amount of money (for example, R60) for a period of 10 days. This money can only be used after that period or for specific pre-approved expenses, like food or electricity. 
+            You can cancel the shield and access the funds at any time, but you’ll see a reminder of your original savings goal before doing so. 
+            This feature is designed to help protect your savings from immediate temptations and support your longer-term financial goals.
         </div>
         <label>Would having the option to set aside (“shield”) a small amount of money for future use help you avoid spending on immediate temptations or help you stick to your financial goals?</label>
         <select required>
@@ -519,7 +525,7 @@ input[type="range"]::-moz-range-thumb{
           <option>No change</option>
           <option>Not at all</option>
         </select>
-        <label>Does being able to set and adjust your own protected amount make you feel more in control of your budgeting decisions, or less in control because of the automated reminders and restrictions?</label>
+        <label>Does being able to set and adjust your own protected amount make you feel more in control of your budgeting decisions, or less in control because of the automated reminders and restrict[...]
         <select required>
           <option value="">Select...</option>
           <option>Much more in control</option>
@@ -549,7 +555,7 @@ input[type="range"]::-moz-range-thumb{
           <a href="https://www.sadag.org/" target="_blank" style="display:block;margin:0.5em 0 1em 0;color:#2E7D83;">Support resources: South African Depression & Anxiety Group</a>
         </div>
         <div class="survey-content">
-          <p>Earlier, you read a scenario designed to make budget constraints feel vivid and we then provided you with a few scenarios that would possibly help alleviate this stress. This helps us study how the effects of financial stress may affect decision making and to begin to design possible solutions. <br>
+          <p>Earlier, you read a scenario designed to make budget constraints feel vivid and we then provided you with a few scenarios that would possibly help alleviate this stress. This helps us stu[...]
             Your responses are confidential, thank you for taking part in the survey.</p>
         </div>
         <div class="btn-row">
@@ -557,11 +563,34 @@ input[type="range"]::-moz-range-thumb{
         </div>
       </div>
 
-      <!-- Screen 12: End of Survey -->
+      <!-- Screen 12: End of Survey + Capture Form for Draw Entry -->
       <div class="survey-screen hidden" id="screen-12">
         <h2>End of Survey</h2>
         <p>Thank you for completing the study!</p>
-        <p>Your answers will help researchers understand how South Africans plan and make financial decisions under everyday pressures. This evidence can guide the design of better tools, products, and support systems that reflect the real challenges South African households face.</p>
+        <p>Your answers will help researchers understand how South Africans plan and make financial decisions under everyday pressures. This evidence can guide the design of better tools, products, an[...]
+        </p>
+
+        <!-- New capture form for draw entry -->
+        <div class="survey-content">
+          <p><strong>To be entered into the draw to win 1 of 20 R250 data vouchers please provide your details.</strong></p>
+          <label for="entryName">Name</label>
+          <input type="text" id="entryName" name="entryName" placeholder="First name">
+          <label for="entrySurname">Surname</label>
+          <input type="text" id="entrySurname" name="entrySurname" placeholder="Surname">
+          <label for="entryCell">Cell phone number</label>
+          <input type="tel" id="entryCell" name="entryCell" placeholder="e.g. 0811234567">
+          <label>
+            <input type="checkbox" id="entryConsent" name="entryConsent">
+            I consent to my details being used to enter the draw for a data voucher.
+          </label>
+          <p style="font-size:0.95em;color:#666;margin-top:0.25em;">
+            Note: Providing contact details is optional. If you provide your details they will be stored separately from your survey responses and only used to contact winners.
+          </p>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" onclick="finishAndSubmit()">Finish and submit</button>
+        </div>
       </div>
     </form>
     <div class="center hidden" id="exitMsg">
@@ -589,7 +618,7 @@ function showScreen(n) {
   if (n === 5) startTimer5();
   if (n === 6) updateActionSelection();
   if (n === 12) {
-    submitSurvey();
+    // do not auto-submit here; wait for the user to click Finish and submit
   }
 }
 
@@ -735,6 +764,17 @@ function collectSurveyData() {
   data.distress = form.distress?.value;
   data.distressExplain = form.distressExplain?.value;
 
+  // New draw entry fields (optional)
+  const entryNameEl = document.getElementById('entryName');
+  const entrySurnameEl = document.getElementById('entrySurname');
+  const entryCellEl = document.getElementById('entryCell');
+  const entryConsentEl = document.getElementById('entryConsent');
+
+  data.entryName = entryNameEl ? entryNameEl.value.trim() : '';
+  data.entrySurname = entrySurnameEl ? entrySurnameEl.value.trim() : '';
+  data.entryCell = entryCellEl ? entryCellEl.value.trim() : '';
+  data.entryConsent = entryConsentEl ? (entryConsentEl.checked ? "Yes" : "No") : "No";
+
   return data;
 }
 
@@ -775,6 +815,38 @@ function submitPartialSurveyOnExit() {
 }
 
 window.addEventListener("beforeunload", submitPartialSurveyOnExit);
+
+// New function called from the final screen button
+function finishAndSubmit() {
+  // if user checked consent to enter the draw ensure basic validation of phone number present
+  const consentChecked = document.getElementById('entryConsent')?.checked;
+  const cell = document.getElementById('entryCell')?.value.trim();
+
+  if (consentChecked) {
+    // require at least a phone number when consenting to be entered
+    if (!cell) {
+      alert("You checked the consent box for the draw. Please provide a cell phone number to proceed.");
+      return;
+    }
+    // basic validation: digits and length typical for SA numbers (9-12 chars allowing country code)
+    const digits = cell.replace(/\D/g,'');
+    if (digits.length < 9 || digits.length > 15) {
+      if (!confirm("The phone number you entered looks unusual. Do you want to continue anyway?")) {
+        return;
+      }
+    }
+  }
+
+  // Submit final survey (consent true)
+  submitSurvey(false);
+
+  // After submission hide form and show a thank you screen
+  document.getElementById('surveyForm').classList.add('hidden');
+  const center = document.createElement('div');
+  center.className = 'center';
+  center.innerHTML = '<h2>Thank you!</h2><p>Your responses have been submitted.</p>';
+  document.querySelector('.survey-container').appendChild(center);
+}
 
 document.addEventListener('DOMContentLoaded', function() {
   showScreen(1);

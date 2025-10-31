@@ -643,7 +643,7 @@ function exitSurvey() {
 
 function startTimer4() {
   if (timer4Interval) clearInterval(timer4Interval);
-  let s = 20;
+  let s = 10;
   document.getElementById('timer4-count').textContent = s;
   document.getElementById('comprehensionCheck').disabled = true;
   document.getElementById('compContinue').disabled = true;
@@ -662,7 +662,7 @@ function startTimer4() {
 
 function startTimer5() {
   if (timer5Interval) clearInterval(timer5Interval);
-  let s = 30;
+  let s = 15;
   document.getElementById('timer5-count').textContent = s;
   document.getElementById('optGenContinue').disabled = true;
   document.getElementById('timer5').innerHTML = `Time remaining: <span id="timer5-count">${s}</span>s`;

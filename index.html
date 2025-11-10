@@ -693,7 +693,7 @@ function createDebriefScreens() {
   p2a.innerText = 'Earlier, you read a short scenario about managing on a tight budget and answered questions about different ways to keep your money safe.';
   content2.appendChild(p2a);
   const p2b = document.createElement('p');
-  p2b.innerText = 'These questions help us understand how financial stress can influence decision-making and explore ideas that could make managing money easier. Your responses are completely confidential. Thank you for taking part in this survey.';
+  p2b.innerText = 'These questions help us understand how financial stress can influence decision-making and explore ideas that could make managing money easier. Your responses are completely confidential and used only for research purposes.';
   content2.appendChild(p2b);
 
   screenDiv2.appendChild(content2);
@@ -825,13 +825,18 @@ function collectSurveyData() {
 function submitSurvey(final = true) {
   const data = collectSurveyData();
   if (!final) data.partial = true;
+
+  // Debug log so you can inspect what is being sent in the Network console
+  console.log('Submitting survey data to endpoint:', ENDPOINT_URL, data);
+
   fetch(ENDPOINT_URL, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams(data).toString()
   })
-  .then(res => res.text())
-  .then(res => {
+  .then(res => res.text().then(text => ({ ok: res.ok, status: res.status, text })))
+  .then(({ ok, status, text }) => {
+    console.log('Server response status:', status, 'body:', text);
     const thankIndex = totalScreens;
     showScreen(thankIndex);
     document.getElementById('surveyForm').classList.add('hidden');
@@ -839,7 +844,7 @@ function submitSurvey(final = true) {
   })
   .catch(err => {
     console.error('Submission error', err);
-    alert('There was a problem submitting your responses.');
+    alert('There was a problem submitting your responses. Please check your internet connection or try again later.');
     const thankIndex = totalScreens;
     showScreen(thankIndex);
     document.getElementById('surveyForm').classList.add('hidden');

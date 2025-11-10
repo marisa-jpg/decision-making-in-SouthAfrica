@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Everyday Planning in South Africa Survey</title>
+  <title>Perceptions of Financial System Safety</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
@@ -87,6 +87,12 @@
       min-height: 100px;
       resize: vertical;
     }
+    .small-note {
+      font-size: 0.92rem;
+      color: #666;
+      margin-top: 0.25rem;
+      margin-bottom: 0.6rem;
+    }
     .slider-labels {
       display: flex;
       justify-content: space-between;
@@ -143,497 +149,619 @@
     }
     .multi-select-list input[type="checkbox"] { margin-right: 0.5em; }
     .center { text-align: center; }
+
+    /* Slider styles */
+    .slider-row {
+      margin: 0.6rem 0 1.2rem;
+    }
+    input[type="range"]{
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      margin: 0.4rem 0 0.4rem;
+      -webkit-appearance: none;
+      background: transparent;
+      height: 10px;
+      border-radius: 6px;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-runnable-track{
+      height: 10px;
+      border-radius: 6px;
+      background: linear-gradient(to right, var(--progress1), var(--progress2));
+    }
+    input[type="range"]::-moz-range-track{
+      height: 10px;
+      border-radius: 6px;
+      background: linear-gradient(to right, var(--progress1), var(--progress2));
+    }
+    input[type="range"]::-webkit-slider-thumb{
+      -webkit-appearance: none;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--primary-alt);
+      box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--primary-alt);
+      cursor: pointer;
+      margin-top: -4px;
+    }
+    input[type="range"]::-moz-range-thumb{
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--primary-alt);
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 1px var(--primary-alt);
+      cursor: pointer;
+    }
+    .tick-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.25rem;
+      font-size: 0.92rem;
+      color: #666;
+      user-select: none;
+    }
+    .tick-row span {
+      width: calc(100% / 7);
+      text-align: center;
+      transform: translateX(0);
+    }
+    .slider-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.98rem;
+    }
+    .value-bubble {
+      background: var(--primary);
+      color: #fff;
+      padding: 0.15em 0.5em;
+      border-radius: 999px;
+      font-weight: 600;
+      min-width: 28px;
+      text-align: center;
+    }
+
+    .support-link {
+      display: inline-block;
+      margin-top: 0.5rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
     @media (max-width: 800px) {
       .survey-container { padding: 1em; max-width: 99vw;}
+      .tick-row span { font-size: 0.8rem; }
     }
-   /* Make the Warm-up stress slider span the full form width */
-input[type="range"]{
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  margin: 0.4rem 0 0.8rem;
-
-  -webkit-appearance: none;
-  background: transparent; /* track styles are below */
-  height: 10px;
-  border-radius: 6px;
-  outline: none;
-}
-
-/* Track (WebKit: Chrome, Edge, Safari) */
-input[type="range"]::-webkit-slider-runnable-track{
-  height: 10px;
-  border-radius: 6px;
-  background: linear-gradient(to right, var(--progress1), var(--progress2));
-}
-
-/* Track (Firefox) */
-input[type="range"]::-moz-range-track{
-  height: 10px;
-  border-radius: 6px;
-  background: linear-gradient(to right, var(--progress1), var(--progress2));
-}
-
-/* Thumb */
-input[type="range"]::-webkit-slider-thumb{
-  -webkit-appearance: none;
-  width: 18px; height: 18px; border-radius: 50%;
-  background: var(--primary-alt);
-  box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--primary-alt);
-  cursor: pointer;
-  margin-top: -4px; /* center on the 10px track */
-}
-input[type="range"]::-moz-range-thumb{
-  width: 18px; height: 18px; border-radius: 50%;
-  background: var(--primary-alt);
-  border: 3px solid #fff;
-  box-shadow: 0 0 0 1px var(--primary-alt);
-  cursor: pointer;
-}
   </style>
 </head>
 <body>
   <div class="survey-container">
     <div class="progress-bar-bg">
-      <div class="progress-bar-fill" id="progressBar" style="width: 8%;"></div>
+      <div class="progress-bar-fill" id="progressBar" style="width: 0%;"></div>
     </div>
+
     <form id="surveyForm" autocomplete="off">
-
-      <!-- Screen 1: Consent -->
-      <div class="survey-screen" id="screen-1">
-        <h1>Study on Everyday Planning in South Africa</h1>
+      <!-- Screen 1: Intro / Consent -->
+      <div class="survey-screen" id="screen-1" data-screen-index="1">
+        <h1>Perceptions of Financial System Safety</h1>
         <div class="survey-content">
-          <p>Help us understand how South Africans plan and make everyday money decisions. Your voice helps build better financial tools designed for South Africans, by South Africans.
-        As a thank-you, you’ll be <strong style="color:#2E7D83;">entered into a draw for one of twenty R250 data vouchers.</strong>
-        <p>It takes just a few minutes and could make a real difference. Some questions may touch on finances.</p>
-          <p>Participation is voluntary and anonymous. You can stop at any time without penalty.</p>
-          <p>We really value your voice, this research is about building a South African perspective into how financial planning support can be designed.</p>
-          <p class="alert-message" id="ethicsNote" style="display:block;">Ethics Note: Your responses stay fully anonymous, personal info is not linked to your answers.</p>
+          <p>This short survey asks about your views of different ways of keeping or saving money.</p>
+          <p>It should take less than 2 minutes. All answers are anonymous, please respond honestly.</p>
+          <p class="small-note">Scale reminder: 1 = Strongly Disagree &nbsp;&nbsp; 7 = Strongly Agree</p>
         </div>
         <div class="btn-row">
-          <button type="button" onclick="nextScreen()" id="agreeBtn">I agree (continue to survey)</button>
-          <button type="button" class="secondary" onclick="exitSurvey()">I do not agree (exit survey)</button>
+          <button type="button" onclick="nextScreen()" id="agreeBtn">Start survey</button>
+          <button type="button" class="secondary" onclick="exitSurvey()">Exit</button>
         </div>
       </div>
 
-      <!-- Screen 2: Warm-up -->
-      <div class="survey-screen hidden" id="screen-2">
-        <h2>Warm-up</h2>
-        <label>Right now, how stressed do you feel about money?</label>
-        <input type="range" min="0" max="100" step="1" name="stressSlider" id="stressSlider" value="50">
-        <div class="slider-labels">
-          <span>Not at all</span>
-          <span>Very stressed</span>
-        </div>
-        <label>In the past month, how often did you worry about running out of money for basics?</label>
-        <select name="worryFrequency" required>
-          <option value="">Select...</option>
-          <option>Never</option>
-          <option>Rarely</option>
-          <option>Sometimes</option>
-          <option>Often</option>
-          <option>Almost always</option>
-        </select>
-        <label>How confident are you that your income will last to next payment date?</label>
-        <select name="incomeConfidence" required>
-          <option value="">Select...</option>
-          <option>Very confident</option>
-          <option>Somewhat confident</option>
-          <option>Not so confident</option>
-          <option>Not at all</option>
-        </select>
-        <label>How often did you skip/late pay a bill in the past 30 days?</label>
-        <select name="latePayFrequency" required>
-          <option value="">Select...</option>
-          <option>Never</option>
-          <option>Once</option>
-          <option>A few times</option>
-          <option>Often</option>
-          <option>Almost always</option>
-        </select>
-        <label>How many people do you support financially?</label>
-        <input type="number" min="0" max="20" name="supportCount" required>
-        <div class="btn-row">
-          <button type="button" onclick="nextScreen()">Continue</button>
-        </div>
-      </div>
-
-      <!-- Screen 3: About you -->
-      <div class="survey-screen hidden" id="screen-3">
-        <h2>About you</h2>
-        <label>Do you live in South Africa?</label>
-        <select name="liveInSA" required>
-          <option value="">Select...</option>
-          <option>Yes</option>
-          <option>No</option>
-        </select>
-        <label>What is your age?</label>
-        <input type="number" min="16" max="120" name="age" required>
-        <label>What is your gender?</label>
-        <select name="gender" required>
-          <option value="">Select...</option>
-          <option>Male</option>
-          <option>Female</option>
-          <option>Non-binary / Other</option>
-          <option>Prefer not to say</option>
-        </select>
-        <label>What is the highest level of education you have completed?</label>
-        <select name="education" required>
-          <option value="">Select...</option>
-          <option>No formal education</option>
-          <option>Primary school</option>
-          <option>Secondary / High school</option>
-          <option>Some college or vocational training</option>
-          <option>University</option>
-        </select>
-        <label>Monthly income range:</label>
-        <select name="incomeRange" required>
-          <option value="">Select...</option>
-          <option>Under R4 000</option>
-          <option>R4 001 – R10 000</option>
-          <option>R10 001 – R20 000</option>
-          <option>Above R20 000</option>
-        </select>
-        <label>What is your main source of household income?</label>
-        <select name="incomeSource" required>
-          <option value="">Select...</option>
-          <option>Formal salary</option>
-          <option>Social grant(s)</option>
-          <option>Informal work / piece jobs</option>
-          <option>Payments from family</option>
-          <option>Self-employment / small business</option>
-        </select>
-        <div class="btn-row">
-          <button type="button" onclick="nextScreen()">Continue</button>
-        </div>
-      </div>
-
-      <!-- Screen 4: Scenario reading with timer and comprehension check -->
-      <div class="survey-screen hidden" id="screen-4">
-        <h2>Scenario</h2>
-        <div class="survey-content">
-          <p>Imagine it is four days before payday.<br>
-            You have <strong>R300</strong> left in your account.<br>
-            In three days, fixed debits are due:
-          </p>
-          <ul>
-            <li>Electricity: R200</li>
-            <li>Transport: R120</li>
-          </ul>
-          <p>This morning, your child’s school sent an urgent message:<br>
-            School supplies (exam materials + uniform repairs) costing <strong>R500</strong> are needed within 48 hours.
-          </p>
-          <p>You cannot borrow from family. Your overdraft is maxed out.</p>
-          <p>How will you manage the next four days so that the school is paid and your essential expenses are covered?</p>
-        </div>
-        <div class="timer" id="timer4">Reading time: <span id="timer4-count">10</span>s</div>
-        <fieldset id="comprehensionCheck" disabled>
-          <label>How much is available in your account now?</label>
-          <select id="compQ1" required>
-            <option value="">Select...</option>
-            <option>R300</option>
-            <option>R500</option>
-            <option>R0</option>
-          </select>
-          <label>When are the school costs due?</label>
-          <select id="compQ2" required>
-            <option value="">Select...</option>
-            <option>Within 48 hours</option>
-            <option>In two weeks</option>
-            <option>Next month</option>
-          </select>
-          <span class="error-message" id="compError">Please select the correct answers to proceed.</span>
-        </fieldset>
-        <div class="btn-row">
-          <button type="button" id="compContinue" onclick="checkComprehension()" disabled>Continue</button>
-        </div>
-      </div>
-
-      <!-- Screen 5: Option Generation with countdown -->
-      <div class="survey-screen hidden" id="screen-5">
-        <h2>Option Generation</h2>
-        <p>In 30 seconds, list as many specific actions as you could take to handle the situation.<br>
-          Write one action per line (e.g., ‘sell [item] for about R___’, ‘delay electricity by ___ days’, ‘buy partial supplies now’).
-        </p>
-        <textarea name="actionList" id="actionList" required placeholder="Enter actions here..."></textarea>
-        <div class="timer" id="timer5">Time remaining: <span id="timer5-count">15</span>s</div>
-        <div class="btn-row">
-          <button type="button" id="optGenContinue" onclick="nextScreen()" disabled>Continue</button>
-        </div>
-      </div>
-
-      <!-- Screen 6: Prioritisation -->
-      <div class="survey-screen hidden" id="screen-6">
-        <h2>Prioritise Your Actions</h2>
-        <p>From your list, select the top two actions you’d try first.</p>
-        <div id="actionSelectList" class="multi-select-list"></div>
-        <label>Briefly explain why these two.</label>
-        <textarea name="prioritiseReason" maxlength="300" required></textarea>
-        <div class="btn-row">
-          <button type="button" onclick="nextScreen()">Continue</button>
-        </div>
-      </div>
-
-      <!-- Screen 7: Immediate Scarcity & Checks -->
-      <div class="survey-screen hidden" id="screen-7">
-        <h2>Quick Check-in</h2>
-        <label>Right now I feel financially squeezed</label>
-        <select name="scarcityFeel" required>
-          <option value="">Select...</option>
-          <option>Yes</option>
-          <option>Sort of</option>
-          <option>Not at all</option>
-        </select>
-        <label>I feel in control of my money situation right now.</label>
-        <select name="controlFeel" required>
-          <option value="">Select...</option>
-          <option>Yes</option>
-          <option>Sort of</option>
-          <option>Not at all</option>
-        </select>
-        <label>I could cover a R2000 expense in the next 48 hours without missing essentials.</label>
-        <select name="liquidityFeel" required>
-          <option value="">Select...</option>
-          <option>Yes</option>
-          <option>No</option>
-        </select>
-        <label>To show you are paying attention, please select ‘Agree’ on this item.</label>
-        <select name="attentionCheck" required>
-          <option value="">Select...</option>
-          <option>Agree</option>
-          <option>Disagree</option>
-        </select>
-        <div class="btn-row">
-          <button type="button" onclick="nextScreen()">Continue</button>
-        </div>
-      </div>
-
-      <!-- Screen 8: Split-Payout Framing -->
-      <div class="survey-screen hidden" id="screen-8">
-        <h2>Split-Payout Framing</h2>
-        <div class="survey-content">
-          <p>Imagine a money system that’s meant to help you — not control you.
-Your monthly pay is split into two parts: one now, and one two weeks later.
-From each part, money for basics like electricity or transport is set aside automatically, so you don’t have to stress about missing them.
-The rest of your money is still yours to use however you want.
-This system is meant to make planning easier and help you avoid quick, impulsive spending.
-          </p>
-        </div>
-        <label>If you were paid in two parts each month, do you think it would help you avoid spending too quickly or make it easier to manage your money through the month?</label>
-        <select required>
-          <option value="">Select...</option>
-          <option>Yes, it would help a lot</option>
-          <option>Somewhat, it might help</option>
-          <option>It would make no difference</option>
-          <option>It would make things much harder</option>
-        </select>
-        <label>Do you think getting your money in two parts would help you stop yourself from spending too much right after payday?</label>
-        <select required>
-          <option value="">Select...</option>
-          <option>Yes definitely</option>
-          <option>Maybe</option>
-          <option>Probably not</option>
-          <option>Not at all</option>
-        </select>
-        <label>Would splitting your pay into two parts make budgeting and planning for the month less stressful for you?</label>
-        <select required>
-          <option value="">Select...</option>
-          <option>Yes it would help</option>
-          <option>Only a little</option>
-          <option>No change</option>
-          <option>Not at all</option>
-        </select>
-        <label>Does having essential expenses (like electricity and transport) automatically covered make decision-making easier for you, or does it make you feel less in control?</label>
-        <select required>
-          <option value="">Select...</option>
-          <option>Much easier</option>
-          <option>Only a little</option>
-          <option>No change</option>
-          <option>Not at all</option>
-        </select>
-        <label>If you were to use this system, which essential categories would you want to be automatically protected every payout? E.g. Food, airtime, transport, school fees</label>
-        <input type="text" required>
-        <div class="btn-row">
-          <button type="button" onclick="nextScreen()">Continue</button>
-        </div>
-      </div>
-
-      <!-- Screen 9: Envelope/Default Budgeting -->
-      <div class="survey-screen hidden" id="screen-9">
-        <h2>Envelope/Default Budgeting</h2>
-        <div class="survey-content">
-          <p>Imagine a budgeting tool that helps you plan your money and make sure your most important needs are covered.
-        It gives you suggested amounts for things like food, electricity, and transport — based on what’s typical for households like yours. You can adjust these amounts however you like, and if you lower what’s set aside for essentials, you’ll just be asked to say why.
-        <p>
-        You can also choose to “lock” part of your money until the middle of the month. This isn’t about taking away your control — it’s about helping you stick to your plan and avoid quick spending that might cause problems later. The goal is to help you stay on track and know your essentials are always covered, even if something unexpected happens.
-          <p>
-        </div>
-        <label>I felt in control of my choices while using this budgeting tool.</label>
-        <select required>
-          <option value="">Select...</option>
-          <option>Strongly disagree</option>
-          <option>Disagree</option>
-          <option>Neutral</option>
-          <option>Agree</option>
-          <option>Strongly agree</option>
-        </select>
-        <label>This tool made me think carefully about my decisions.</label>
-        <select required>
-          <option value="">Select...</option>
-          <option>Strongly disagree</option>
-          <option>Disagree</option>
-          <option>Neutral</option>
-          <option>Agree</option>
-          <option>Strongly agree</option>
-        </select>
-        <label>I feel confident about the decisions I made with this tool.</label>
-        <select required>
-          <option value="">Select...</option>
-          <option>Strongly disagree</option>
-          <option>Disagree</option>
-          <option>Neutral</option>
-          <option>Agree</option>
-          <option>Strongly agree</option>
-        </select>
-        <div class="btn-row">
-          <button type="button" onclick="nextScreen()">Continue</button>
-        </div>
-      </div>
-
-      <!-- Screen 10: Commitment Device / Goal Shield -->
-      <div class="survey-screen hidden" id="screen-10">
-        <h2>Commitment Device / Goal Shield</h2>
-        <div class="survey-content">
-          <p>Imagine you have the option to “shield” a small amount of money (for example, R60) for a period of 10 days. This money can only be used after that period or for specific pre-approved expenses, like food or electricity. 
-            You can cancel the shield and access the funds at any time, but you’ll see a reminder of your original savings goal before doing so. 
-            This feature is designed to help protect your savings from immediate temptations and support your longer-term financial goals.
-        </div>
-        <label>Would having the option to set aside (“shield”) a small amount of money for future use help you avoid spending on immediate temptations or help you stick to your financial goals?</label>
-        <select required>
-          <option value="">Select...</option>
-          <option>Yes it would help</option>
-          <option>Only a little</option>
-          <option>No change</option>
-          <option>Not at all</option>
-        </select>
-        <label>Do you think having a protected savings amount for a set period (e.g., 10 days), with reminders of your goal, would reduce the mental effort or stress of managing your money?</label>
-        <select required>
-          <option value="">Select...</option>
-          <option>Yes it would help</option>
-          <option>Only a little</option>
-          <option>No change</option>
-          <option>Not at all</option>
-        </select>
-        <label>Does being able to set and adjust your own protected amount make you feel more in control of your budgeting decisions, or less in control because of the automated reminders and restrictions?
-        <select required>
-          <option value="">Select...</option>
-          <option>Much more in control</option>
-          <option>Only a little</option>
-          <option>A little less in control</option>
-          <option>Much less in control</option>
-        </select>
-        <label>If you were to use this system, what types of expenses or goals would you most want to protect with a shield?</label>
-        <input type="text" required>
-        <div class="btn-row">
-          <button type="button" onclick="nextScreen()">Continue</button>
-        </div>
-      </div>
-
-      <!-- Screen 11: Debrief & Distress Check -->
-      <div class="survey-screen hidden" id="screen-11">
-        <h2>Debrief & Distress Check</h2>
-        <label>Did any part of the scenario make you uncomfortable?</label>
-        <select name="distress" id="distressSelect" required>
-          <option value="">Select...</option>
-          <option>Yes</option>
-          <option>No</option>
-        </select>
-        <div id="distressExplainDiv" class="hidden">
-          <label>Please briefly tell us which part:</label>
-          <textarea name="distressExplain" id="distressExplain" maxlength="200"></textarea>
-          <a href="https://www.sadag.org/" target="_blank" style="display:block;margin:0.5em 0 1em 0;color:#2E7D83;">Support resources: South African Depression & Anxiety Group</a>
-        </div>
-        <div class="survey-content">
-          <p>Earlier, you read a scenario designed to make budget constraints feel vivid and we then provided you with a few scenarios that would possibly help alleviate this stress. This helps us stu[...]
-            Your responses are confidential, thank you for taking part in the survey.</p>
-        </div>
-        <div class="btn-row">
-          <button type="button" onclick="nextScreen()">Continue</button>
-        </div>
-      </div>
-
-      <!-- Screen 12: End of Survey + Capture Form for Draw Entry -->
-      <div class="survey-screen hidden" id="screen-12">
-        <h2>End of Survey</h2>
-        <p>Thank you for completing the study!</p>
-        <p>Your answers will help researchers understand how South Africans plan and make financial decisions under everyday pressures. This evidence can guide the design of better tools, products, an[...]
-        </p>
-
-        <!-- New capture form for draw entry -->
-        <div class="survey-content">
-          <p><strong>To be entered into the draw to win 1 of 20 R250 data vouchers please provide your details.</strong></p>
-          <label for="entryName">Name</label>
-          <input type="text" id="entryName" name="entryName" placeholder="First name">
-          <label for="entrySurname">Surname</label>
-          <input type="text" id="entrySurname" name="entrySurname" placeholder="Surname">
-          <label for="entryCell">Cell phone number</label>
-          <input type="tel" id="entryCell" name="entryCell" placeholder="e.g. 0811234567">
-          <label>
-            <input type="checkbox" id="entryConsent" name="entryConsent">
-            I consent to my details being used to enter the draw for a data voucher.
-          </label>
-          <p style="font-size:0.95em;color:#666;margin-top:0.25em;">
-            Note: Providing contact details is optional. If you provide your details they will be stored separately from your survey responses and only used to contact winners.
-          </p>
-        </div>
-
-        <div class="btn-row">
-          <button type="button" onclick="finishAndSubmit()">Finish and submit</button>
-        </div>
-      </div>
+      <!-- Additional screens are built dynamically -->
     </form>
+
     <div class="center hidden" id="exitMsg">
-      <h2>Thank you for your interest</h2>
-      <p>You have exited the survey. No data has been saved.</p>
+      <h2>Thank you</h2>
+      <p>Your responses have been recorded. Thank you for taking part in this short survey.</p>
     </div>
   </div>
 
 <script>
 const ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycbzuB6bwcp1ChnvhzXItyWANBWIlOZ_3ziJ9CWGU1EzjF6tjWSfp9TBLjURYPcIM2i0sqQ/exec';
 
+// The statements are used directly as the main heading on each statement screen.
+// Each statement screen now also displays "1 = Strongly Disagree 7 = Strongly Agree" under the heading.
+const statements = [
+  "I believe my money is safe in this system.",
+  "I understand how this system works.",
+  "I trust this system to return my money when I need it.",
+  "If something goes wrong, I know how to resolve it.",
+  "I feel in control when using this system.",
+  "I believe people like me use this system safely.",
+  "I would recommend this system to someone else."
+];
+const systems = [
+  { key: "bank", label: "Bank" },
+  { key: "stokvel", label: "Stokvel (community saving group)" },
+  { key: "mashonisa", label: "Mashonisa (informal money lender)" }
+];
+
+let totalScreens = 1; // intro counts as 1
 let currentScreen = 1;
-const totalScreens = 12;
-let actionLines = [];
-let timer4Interval = null;
-let timer5Interval = null;
+
+function createStatementScreens() {
+  const form = document.getElementById('surveyForm');
+
+  // For each statement create its own screen (Start index at 2)
+  statements.forEach((stmt, idx) => {
+    const screenIndex = ++totalScreens;
+    const screenDiv = document.createElement('div');
+    screenDiv.className = 'survey-screen hidden';
+    screenDiv.id = 'screen-' + screenIndex;
+    screenDiv.setAttribute('data-screen-index', screenIndex);
+
+    // Use the full statement as the heading (no "Statement X" headline)
+    const h = document.createElement('h2');
+    h.innerText = stmt;
+    screenDiv.appendChild(h);
+
+    // Add scale reminder under the heading for each statement screen
+    const scaleNote = document.createElement('div');
+    scaleNote.className = 'small-note';
+    scaleNote.innerText = '1 = Strongly Disagree   7 = Strongly Agree';
+    screenDiv.appendChild(scaleNote);
+
+    const content = document.createElement('div');
+    content.className = 'survey-content';
+
+    // Sliders for each system
+    systems.forEach(sys => {
+      const row = document.createElement('div');
+      row.className = 'slider-row';
+      const label = document.createElement('div');
+      label.className = 'slider-label';
+      const left = document.createElement('div');
+      left.innerText = sys.label;
+      const valueBubble = document.createElement('div');
+      valueBubble.className = 'value-bubble';
+      valueBubble.id = `value_${idx+1}_${sys.key}`;
+      valueBubble.innerText = '4'; // default
+
+      label.appendChild(left);
+      label.appendChild(valueBubble);
+      row.appendChild(label);
+
+      const input = document.createElement('input');
+      input.type = 'range';
+      input.min = '1';
+      input.max = '7';
+      input.step = '1';
+      input.value = '4';
+      input.id = `q${idx+1}_${sys.key}`;
+      input.name = `q${idx+1}_${sys.key}`;
+      if (sys.key === systems[0].key) input.required = true;
+
+      input.addEventListener('input', function() {
+        document.getElementById(valueBubble.id).innerText = this.value;
+      });
+
+      row.appendChild(input);
+
+      // numeric ticks 1..7
+      const ticks = document.createElement('div');
+      ticks.className = 'tick-row';
+      for (let t=1; t<=7; t++) {
+        const span = document.createElement('span');
+        span.innerText = t;
+        ticks.appendChild(span);
+      }
+      row.appendChild(ticks);
+      content.appendChild(row);
+    });
+
+    screenDiv.appendChild(content);
+
+    // navigation buttons (Back, Next)
+    const btnRow = document.createElement('div');
+    btnRow.className = 'btn-row';
+
+    const backBtn = document.createElement('button');
+    backBtn.type = 'button';
+    backBtn.className = 'secondary';
+    backBtn.innerText = 'Back';
+    backBtn.onclick = function() { showScreen(screenIndex - 1); };
+    btnRow.appendChild(backBtn);
+
+    const nextBtn = document.createElement('button');
+    nextBtn.type = 'button';
+    nextBtn.innerText = 'Next';
+    nextBtn.onclick = function() { nextScreen(); };
+    btnRow.appendChild(nextBtn);
+
+    screenDiv.appendChild(btnRow);
+
+    form.appendChild(screenDiv);
+  });
+}
+
+function createScarcityScreen() {
+  const form = document.getElementById('surveyForm');
+  const screenIndex = ++totalScreens;
+  const screenDiv = document.createElement('div');
+  screenDiv.className = 'survey-screen hidden';
+  screenDiv.id = 'screen-' + screenIndex;
+  screenDiv.setAttribute('data-screen-index', screenIndex);
+
+  const h = document.createElement('h2');
+  h.innerText = 'Scarcity prime';
+  screenDiv.appendChild(h);
+
+  const content = document.createElement('div');
+  content.className = 'survey-content';
+  const p = document.createElement('p');
+  p.innerText = 'Imagine: You have R250 to last the next 7 days, and you are unsure when your next income will arrive. How would this situation make you feel when deciding where to keep your money?';
+  content.appendChild(p);
+
+  const options = [
+    'Very stressed',
+    'Somewhat stressed',
+    'Neutral',
+    'Somewhat calm',
+    'Very calm'
+  ];
+  const listDiv = document.createElement('div');
+  listDiv.className = 'multi-select-list';
+  options.forEach((opt,i) => {
+    const lab = document.createElement('label');
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'scarcityPrime';
+    radio.value = opt;
+    if (i === 0) radio.required = true;
+    lab.appendChild(radio);
+    lab.appendChild(document.createTextNode(' ' + opt));
+    listDiv.appendChild(lab);
+  });
+  content.appendChild(listDiv);
+
+  screenDiv.appendChild(content);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+
+  const backBtn = document.createElement('button');
+  backBtn.type = 'button';
+  backBtn.className = 'secondary';
+  backBtn.innerText = 'Back';
+  backBtn.onclick = function() { showScreen(screenIndex - 1); };
+  btnRow.appendChild(backBtn);
+
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.innerText = 'Next';
+  nextBtn.onclick = function() { nextScreen(); };
+  btnRow.appendChild(nextBtn);
+
+  screenDiv.appendChild(btnRow);
+
+  form.appendChild(screenDiv);
+}
+
+function createChoiceScreen() {
+  const form = document.getElementById('surveyForm');
+  const screenIndex = ++totalScreens;
+  const screenDiv = document.createElement('div');
+  screenDiv.className = 'survey-screen hidden';
+  screenDiv.id = 'screen-' + screenIndex;
+  screenDiv.setAttribute('data-screen-index', screenIndex);
+
+  const h = document.createElement('h2');
+  h.innerText = 'Behavioural Choice Task';
+  screenDiv.appendChild(h);
+
+  const content = document.createElement('div');
+  content.className = 'survey-content';
+  const p = document.createElement('p');
+  p.innerText = 'You have R500 to save for 30 days. Where would you prefer to keep it?';
+  content.appendChild(p);
+
+  const opts = [
+    'Bank account',
+    'Stokvel or trusted peer',
+    'Mashonisa',
+    'Cash at home'
+  ];
+  const listDiv = document.createElement('div');
+  listDiv.className = 'multi-select-list';
+  opts.forEach((opt,i) => {
+    const lab = document.createElement('label');
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'choiceTask';
+    radio.value = opt;
+    if (i === 0) radio.required = true;
+    lab.appendChild(radio);
+    lab.appendChild(document.createTextNode(' ' + opt));
+    listDiv.appendChild(lab);
+  });
+  content.appendChild(listDiv);
+
+  screenDiv.appendChild(content);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+
+  const backBtn = document.createElement('button');
+  backBtn.type = 'button';
+  backBtn.className = 'secondary';
+  backBtn.innerText = 'Back';
+  backBtn.onclick = function() { showScreen(screenIndex - 1); };
+  btnRow.appendChild(backBtn);
+
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.innerText = 'Next';
+  nextBtn.onclick = function() { nextScreen(); };
+  btnRow.appendChild(nextBtn);
+
+  screenDiv.appendChild(btnRow);
+
+  form.appendChild(screenDiv);
+}
+
+function createDemographicsScreen() {
+  const form = document.getElementById('surveyForm');
+  const screenIndex = ++totalScreens;
+  const screenDiv = document.createElement('div');
+  screenDiv.className = 'survey-screen hidden';
+  screenDiv.id = 'screen-' + screenIndex;
+  screenDiv.setAttribute('data-screen-index', screenIndex);
+
+  const h = document.createElement('h2');
+  h.innerText = 'Demographics';
+  screenDiv.appendChild(h);
+
+  const content = document.createElement('div');
+  content.className = 'survey-content';
+
+  const genderLabel = document.createElement('label');
+  genderLabel.innerText = 'Gender';
+  content.appendChild(genderLabel);
+  const genderDiv = document.createElement('div');
+  genderDiv.className = 'multi-select-list';
+  ['Female','Male','Other','Prefer not to say'].forEach((g,i) => {
+    const lab = document.createElement('label');
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'gender';
+    radio.value = g;
+    if (i === 0) radio.required = true;
+    lab.appendChild(radio);
+    lab.appendChild(document.createTextNode(' ' + g));
+    genderDiv.appendChild(lab);
+  });
+  content.appendChild(genderDiv);
+
+  const incomeLabel = document.createElement('label');
+  incomeLabel.innerText = 'Income band (per month)';
+  content.appendChild(incomeLabel);
+  const incomeDiv = document.createElement('div');
+  incomeDiv.className = 'multi-select-list';
+  ['< R2 000','R2 000–R5 000','R5 000–R10 000','> R10 000'].forEach((inc,i) => {
+    const lab = document.createElement('label');
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'incomeBand';
+    radio.value = inc;
+    if (i === 0) radio.required = true;
+    lab.appendChild(radio);
+    lab.appendChild(document.createTextNode(' ' + inc));
+    incomeDiv.appendChild(lab);
+  });
+  content.appendChild(incomeDiv);
+
+  screenDiv.appendChild(content);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+
+  const backBtn = document.createElement('button');
+  backBtn.type = 'button';
+  backBtn.className = 'secondary';
+  backBtn.innerText = 'Back';
+  backBtn.onclick = function() { showScreen(screenIndex - 1); };
+  btnRow.appendChild(backBtn);
+
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.innerText = 'Next';
+  nextBtn.onclick = function() { finishAndProceedToDebrief(); };
+  btnRow.appendChild(nextBtn);
+
+  screenDiv.appendChild(btnRow);
+
+  form.appendChild(screenDiv);
+}
+
+function createDebriefScreens() {
+  const form = document.getElementById('surveyForm');
+
+  // Debrief & Distress Check (end)
+  const screenIndex1 = ++totalScreens;
+  const screenDiv1 = document.createElement('div');
+  screenDiv1.className = 'survey-screen hidden';
+  screenDiv1.id = 'screen-' + screenIndex1;
+  screenDiv1.setAttribute('data-screen-index', screenIndex1);
+
+  const h1 = document.createElement('h2');
+  h1.innerText = 'Debrief & Distress Check (end)';
+  screenDiv1.appendChild(h1);
+
+  const content1 = document.createElement('div');
+  content1.className = 'survey-content';
+  const p1 = document.createElement('p');
+  p1.innerText = 'Did any part of the scenario make you uncomfortable?';
+  content1.appendChild(p1);
+
+  const listDiv = document.createElement('div');
+  listDiv.className = 'multi-select-list';
+  ['Yes','No'].forEach((opt,i) => {
+    const lab = document.createElement('label');
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'distress';
+    radio.value = opt;
+    if (i === 0) radio.required = true;
+    radio.addEventListener('change', function() {
+      toggleDistressExplain(opt === 'Yes');
+    });
+    lab.appendChild(radio);
+    lab.appendChild(document.createTextNode(' ' + opt));
+    listDiv.appendChild(lab);
+  });
+  content1.appendChild(listDiv);
+
+  const explainLabel = document.createElement('label');
+  explainLabel.innerText = 'If yes, please briefly tell us which part:';
+  explainLabel.id = 'explainLabel';
+  explainLabel.className = 'hidden';
+  content1.appendChild(explainLabel);
+
+  const explainArea = document.createElement('textarea');
+  explainArea.name = 'distressExplain';
+  explainArea.id = 'distressExplain';
+  explainArea.placeholder = 'Briefly describe which part made you uncomfortable...';
+  explainArea.maxLength = 200;
+  explainArea.className = 'hidden';
+  content1.appendChild(explainArea);
+
+  const supportLink = document.createElement('a');
+  supportLink.href = 'https://www.sadag.org/';
+  supportLink.target = '_blank';
+  supportLink.className = 'support-link hidden';
+  supportLink.id = 'supportLink';
+  supportLink.innerText = 'Support resources: South African Depression & Anxiety Group';
+  content1.appendChild(supportLink);
+
+  screenDiv1.appendChild(content1);
+
+  const btnRow1 = document.createElement('div');
+  btnRow1.className = 'btn-row';
+
+  const backBtn1 = document.createElement('button');
+  backBtn1.type = 'button';
+  backBtn1.className = 'secondary';
+  backBtn1.innerText = 'Back';
+  backBtn1.onclick = function() { showScreen(screenIndex1 - 1); };
+  btnRow1.appendChild(backBtn1);
+
+  const nextBtn1 = document.createElement('button');
+  nextBtn1.type = 'button';
+  nextBtn1.innerText = 'Next';
+  nextBtn1.onclick = function() {
+    if (!document.querySelector('input[name="distress"]:checked')) {
+      alert('Please answer whether any part made you uncomfortable.');
+      return;
+    }
+    const sel = document.querySelector('input[name="distress"]:checked').value;
+    if (sel === 'Yes') {
+      const txt = document.getElementById('distressExplain').value.trim();
+      if (!txt) {
+        alert('You selected Yes. Please briefly indicate which part made you uncomfortable.');
+        return;
+      }
+    }
+    nextScreen();
+  };
+  btnRow1.appendChild(nextBtn1);
+
+  screenDiv1.appendChild(btnRow1);
+  form.appendChild(screenDiv1);
+
+  // Debrief text (short)
+  const screenIndex2 = ++totalScreens;
+  const screenDiv2 = document.createElement('div');
+  screenDiv2.className = 'survey-screen hidden';
+  screenDiv2.id = 'screen-' + screenIndex2;
+  screenDiv2.setAttribute('data-screen-index', screenIndex2);
+
+  const h2 = document.createElement('h2');
+  h2.innerText = 'Debrief';
+  screenDiv2.appendChild(h2);
+
+  const content2 = document.createElement('div');
+  content2.className = 'survey-content';
+  const p2a = document.createElement('p');
+  p2a.innerText = 'Earlier, you read a short scenario about managing on a tight budget and answered questions about different ways to keep your money safe.';
+  content2.appendChild(p2a);
+  const p2b = document.createElement('p');
+  p2b.innerText = 'These questions help us understand how financial stress can influence decision-making and explore ideas that could make managing money easier. Your responses are completely confidential. Thank you for taking part in this survey.';
+  content2.appendChild(p2b);
+
+  screenDiv2.appendChild(content2);
+
+  const btnRow2 = document.createElement('div');
+  btnRow2.className = 'btn-row';
+
+  const backBtn2 = document.createElement('button');
+  backBtn2.type = 'button';
+  backBtn2.className = 'secondary';
+  backBtn2.innerText = 'Back';
+  backBtn2.onclick = function() { showScreen(screenIndex2 - 1); };
+  btnRow2.appendChild(backBtn2);
+
+  const submitBtn = document.createElement('button');
+  submitBtn.type = 'button';
+  submitBtn.innerText = 'Finish and submit';
+  submitBtn.onclick = function() { submitSurvey(true); };
+  btnRow2.appendChild(submitBtn);
+
+  screenDiv2.appendChild(btnRow2);
+  form.appendChild(screenDiv2);
+}
+
+function createThankYouScreen() {
+  const form = document.getElementById('surveyForm');
+  const screenIndex = ++totalScreens;
+  const screenDiv = document.createElement('div');
+  screenDiv.className = 'survey-screen hidden';
+  screenDiv.id = 'screen-' + screenIndex;
+  screenDiv.setAttribute('data-screen-index', screenIndex);
+
+  const h = document.createElement('h2');
+  h.innerText = 'End of Survey';
+  screenDiv.appendChild(h);
+
+  const content = document.createElement('div');
+  content.className = 'survey-content';
+  const p = document.createElement('p');
+  p.innerText = 'Thank you for completing the study! Your answers have been submitted.';
+  content.appendChild(p);
+  screenDiv.appendChild(content);
+
+  form.appendChild(screenDiv);
+}
+
+function buildAllScreens() {
+  createStatementScreens();
+  createScarcityScreen();
+  createChoiceScreen();
+  createDemographicsScreen();
+  createDebriefScreens();
+  createThankYouScreen();
+}
 
 function showScreen(n) {
   document.querySelectorAll('.survey-screen').forEach(el => el.classList.add('hidden'));
   const screen = document.getElementById('screen-' + n);
   if (screen) screen.classList.remove('hidden');
-  document.getElementById('progressBar').style.width = (n*100/totalScreens) + "%";
+  const pct = Math.round((n / totalScreens) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
   currentScreen = n;
-  if (n === 4) startTimer4();
-  if (n === 5) startTimer5();
-  if (n === 6) updateActionSelection();
-  if (n === 12) {
-    // do not auto-submit here; wait for the user to click Finish and submit
-  }
+  window.scrollTo(0,0);
 }
 
 function nextScreen() {
-  if (currentScreen === 4) {
-    if (!compCheckPassed()) {
-      document.getElementById('compError').style.display = "block";
-      return;
-    }
-  }
-  if (currentScreen === 5) {
-    let val = document.getElementById('actionList').value.trim();
-    actionLines = val.split('\n').map(l=>l.trim()).filter(l=>l);
-  }
-  if (currentScreen < totalScreens) showScreen(currentScreen+1);
+  const next = currentScreen + 1;
+  if (next <= totalScreens) showScreen(next);
 }
 
 function exitSurvey() {
@@ -641,173 +769,99 @@ function exitSurvey() {
   document.getElementById('exitMsg').classList.remove('hidden');
 }
 
-function startTimer4() {
-  if (timer4Interval) clearInterval(timer4Interval);
-  let s = 10;
-  document.getElementById('timer4-count').textContent = s;
-  document.getElementById('comprehensionCheck').disabled = true;
-  document.getElementById('compContinue').disabled = true;
-  document.getElementById('timer4').innerHTML = `Reading time: <span id="timer4-count">${s}</span>s`;
-  timer4Interval = setInterval(()=>{
-    s--;
-    document.getElementById('timer4-count').textContent = s;
-    if (s <= 0) {
-      clearInterval(timer4Interval);
-      document.getElementById('timer4').textContent = "You may now answer the comprehension check.";
-      document.getElementById('comprehensionCheck').disabled = false;
-      document.getElementById('compContinue').disabled = false;
-    }
-  }, 1000);
-}
-
-function startTimer5() {
-  if (timer5Interval) clearInterval(timer5Interval);
-  let s = 15;
-  document.getElementById('timer5-count').textContent = s;
-  document.getElementById('optGenContinue').disabled = true;
-  document.getElementById('timer5').innerHTML = `Time remaining: <span id="timer5-count">${s}</span>s`;
-  timer5Interval = setInterval(()=>{
-    s--;
-    document.getElementById('timer5-count').textContent = s;
-    if (s <= 0) {
-      clearInterval(timer5Interval);
-      document.getElementById('optGenContinue').disabled = false;
-      document.getElementById('timer5').textContent = "You may now continue.";
-    }
-  }, 1000);
-}
-
-function compCheckPassed() {
-  let q1 = document.getElementById('compQ1').value, q2 = document.getElementById('compQ2').value;
-  return q1 === "R300" && q2 === "Within 48 hours";
-}
-
-function checkComprehension() {
-  if (compCheckPassed()) {
-    document.getElementById('compError').style.display = "none";
-    nextScreen();
+function toggleDistressExplain(show) {
+  const label = document.getElementById('explainLabel');
+  const area = document.getElementById('distressExplain');
+  const link = document.getElementById('supportLink');
+  if (show) {
+    label.classList.remove('hidden');
+    area.classList.remove('hidden');
+    link.classList.remove('hidden');
+    area.required = true;
   } else {
-    document.getElementById('compError').style.display = "block";
+    label.classList.add('hidden');
+    area.classList.add('hidden');
+    link.classList.add('hidden');
+    area.required = false;
+    area.value = '';
   }
 }
 
-function updateActionSelection() {
-  let list = document.getElementById('actionSelectList');
-  if (!list) return;
-  list.innerHTML = '';
-  actionLines.forEach((line,i) => {
-    let id = "actionBox"+i;
-    let lbl = document.createElement('label');
-    lbl.innerHTML = `<input type="checkbox" value="${i}" id="${id}">${line}`;
-    list.appendChild(lbl);
-  });
-  document.querySelectorAll('#actionSelectList input[type=checkbox]').forEach(cb => {
-    cb.onclick = function() {
-      let boxes = document.querySelectorAll('#actionSelectList input[type=checkbox]:checked');
-      if (boxes.length > 2) this.checked = false;
-    };
-  });
+function finishAndProceedToDebrief() {
+  if (!document.querySelector('input[name="gender"]:checked') || !document.querySelector('input[name="incomeBand"]:checked')) {
+    alert('Please complete the demographics questions.');
+    return;
+  }
+  const idx = findScreenIndexByHeading('Debrief & Distress Check (end)');
+  if (idx) showScreen(idx);
+  else nextScreen();
 }
 
 function collectSurveyData() {
-  const form = document.getElementById('surveyForm');
   const data = {};
-
-  data.stressSlider = form.stressSlider.value;
-  data.worryFrequency = form.worryFrequency.value;
-  data.incomeConfidence = form.incomeConfidence.value;
-  data.latePayFrequency = form.latePayFrequency.value;
-  data.supportCount = form.supportCount.value;
-
-  data.liveInSA = form.liveInSA.value;
-  data.age = form.age.value;
-  data.gender = form.gender.value;
-  data.education = form.education.value;
-  data.incomeRange = form.incomeRange.value;
-  data.incomeSource = form.incomeSource.value;
-
-  data.compQ1 = document.getElementById('compQ1').value;
-  data.compQ2 = document.getElementById('compQ2').value;
-
-  data.actionList = form.actionList.value;
-
-  let selected = [];
-  document.querySelectorAll('#actionSelectList input[type=checkbox]:checked').forEach(cb => {
-    selected.push(cb.parentNode.textContent.trim());
+  statements.forEach((stmt, idx) => {
+    systems.forEach(sys => {
+      const name = `q${idx+1}_${sys.key}`;
+      const el = document.getElementById(name);
+      data[name] = el ? el.value : '';
+    });
   });
-  data.selectedActions = selected.join(' | ');
-  data.prioritiseReason = form.prioritiseReason.value;
-
-  data.scarcityFeel = form.scarcityFeel.value;
-  data.controlFeel = form.controlFeel.value;
-  data.liquidityFeel = form.liquidityFeel.value;
-  data.attentionCheck = form.attentionCheck.value;
-
-  let splitFraming = document.querySelectorAll('#screen-8 select');
-  data.splitPayoutFraming1 = splitFraming[0]?.value;
-  data.splitPayoutFraming2 = splitFraming[1]?.value;
-  data.splitPayoutFraming3 = splitFraming[2]?.value;
-  data.splitPayoutFraming4 = splitFraming[3]?.value;
-  data.essentialCategories = document.querySelector('#screen-8 input[type=text]')?.value;
-
-  let envelopeQs = document.querySelectorAll('#screen-9 select');
-  data.envelopeBudgeting1 = envelopeQs[0]?.value;
-  data.envelopeBudgeting2 = envelopeQs[1]?.value;
-  data.envelopeBudgeting3 = envelopeQs[2]?.value;
-
-  let shieldQs = document.querySelectorAll('#screen-10 select');
-  data.commitmentDevice1 = shieldQs[0]?.value;
-  data.commitmentDevice2 = shieldQs[1]?.value;
-  data.commitmentDevice3 = shieldQs[2]?.value;
-  data.shieldGoals = document.querySelector('#screen-10 input[type=text]')?.value;
-
-  data.distress = form.distress?.value;
-  data.distressExplain = form.distressExplain?.value;
-
-  // New draw entry fields (optional)
-  const entryNameEl = document.getElementById('entryName');
-  const entrySurnameEl = document.getElementById('entrySurname');
-  const entryCellEl = document.getElementById('entryCell');
-  const entryConsentEl = document.getElementById('entryConsent');
-
-  data.entryName = entryNameEl ? entryNameEl.value.trim() : '';
-  data.entrySurname = entrySurnameEl ? entrySurnameEl.value.trim() : '';
-  data.entryCell = entryCellEl ? entryCellEl.value.trim() : '';
-  data.entryConsent = entryConsentEl ? (entryConsentEl.checked ? "Yes" : "No") : "No";
-
+  const sp = document.querySelector('input[name="scarcityPrime"]:checked');
+  data.scarcityPrime = sp ? sp.value : '';
+  const choice = document.querySelector('input[name="choiceTask"]:checked');
+  data.choiceTask = choice ? choice.value : '';
+  const gender = document.querySelector('input[name="gender"]:checked');
+  const income = document.querySelector('input[name="incomeBand"]:checked');
+  data.gender = gender ? gender.value : '';
+  data.incomeBand = income ? income.value : '';
+  const distress = document.querySelector('input[name="distress"]:checked');
+  data.distress = distress ? distress.value : '';
+  data.distressExplain = document.getElementById('distressExplain') ? document.getElementById('distressExplain').value.trim() : '';
+  data.timestamp = new Date().toISOString();
+  data.screenWhenSubmitted = currentScreen;
   return data;
 }
 
-function submitSurvey(partial = false) {
+function submitSurvey(final = true) {
   const data = collectSurveyData();
-  if (partial) {
-    data.partial = true;
-    data.consent = false;
-  } else {
-    data.consent = true;
-  }
+  if (!final) data.partial = true;
   fetch(ENDPOINT_URL, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams(data).toString()  // <--- this is key!
+    body: new URLSearchParams(data).toString()
   })
   .then(res => res.text())
   .then(res => {
-    if (!partial) alert("Survey submitted! Thank you.");
+    const thankIndex = totalScreens;
+    showScreen(thankIndex);
+    document.getElementById('surveyForm').classList.add('hidden');
+    document.getElementById('exitMsg').classList.remove('hidden');
   })
   .catch(err => {
-    if (!partial) alert("Sorry, there was a problem submitting your survey.");
-    console.error(err);
+    console.error('Submission error', err);
+    alert('There was a problem submitting your responses.');
+    const thankIndex = totalScreens;
+    showScreen(thankIndex);
+    document.getElementById('surveyForm').classList.add('hidden');
+    document.getElementById('exitMsg').classList.remove('hidden');
   });
+}
+
+function findScreenIndexByHeading(text) {
+  for (let i=1;i<=totalScreens;i++) {
+    const el = document.getElementById('screen-' + i);
+    if (!el) continue;
+    const h = el.querySelector('h2, h1');
+    if (h && h.innerText.trim().startsWith(text)) return i;
+  }
+  return null;
 }
 
 function submitPartialSurveyOnExit() {
   const data = collectSurveyData();
   data.partial = true;
-  data.timestamp = new Date().toISOString();
   data.screenWhenExited = currentScreen;
   if (currentScreen > 1 && navigator.sendBeacon) {
-    // Convert data object to form data
     const body = new URLSearchParams(data).toString();
     const blob = new Blob([body], { type: "application/x-www-form-urlencoded" });
     navigator.sendBeacon(ENDPOINT_URL, blob);
@@ -816,47 +870,11 @@ function submitPartialSurveyOnExit() {
 
 window.addEventListener("beforeunload", submitPartialSurveyOnExit);
 
-// New function called from the final screen button
-function finishAndSubmit() {
-  // if user checked consent to enter the draw ensure basic validation of phone number present
-  const consentChecked = document.getElementById('entryConsent')?.checked;
-  const cell = document.getElementById('entryCell')?.value.trim();
-
-  if (consentChecked) {
-    // require at least a phone number when consenting to be entered
-    if (!cell) {
-      alert("You checked the consent box for the draw. Please provide a cell phone number to proceed.");
-      return;
-    }
-    // basic validation: digits and length typical for SA numbers (9-12 chars allowing country code)
-    const digits = cell.replace(/\D/g,'');
-    if (digits.length < 9 || digits.length > 15) {
-      if (!confirm("The phone number you entered looks unusual. Do you want to continue anyway?")) {
-        return;
-      }
-    }
-  }
-
-  // Submit final survey (consent true)
-  submitSurvey(false);
-
-  // After submission hide form and show a thank you screen
-  document.getElementById('surveyForm').classList.add('hidden');
-  const center = document.createElement('div');
-  center.className = 'center';
-  center.innerHTML = '<h2>Thank you!</h2><p>Your responses have been submitted.</p>';
-  document.querySelector('.survey-container').appendChild(center);
-}
-
 document.addEventListener('DOMContentLoaded', function() {
+  buildAllScreens();
   showScreen(1);
-  document.getElementById('distressSelect').addEventListener('change', function() {
-    let v = this.value;
-    document.getElementById('distressExplainDiv').classList.toggle('hidden', v !== 'Yes');
-    document.getElementById('distressExplain').required = v === 'Yes';
-  });
 });
 </script>
-  
+
 </body>
 </html>

@@ -379,6 +379,83 @@ function createStatementScreens() {
     screenDiv.appendChild(btnRow);
 
     form.appendChild(screenDiv);
+
+    // Insert an attention check immediately after the target statement.
+    // The target statement is the one about "I believe people like me use this system ..."
+    // which is statements[5] (0-based index 5). Place the attention check right after it.
+    if (idx === 5) {
+      const attnIndex = ++totalScreens;
+      const attnDiv = document.createElement('div');
+      attnDiv.className = 'survey-screen hidden';
+      attnDiv.id = 'screen-' + attnIndex;
+      attnDiv.setAttribute('data-screen-index', attnIndex);
+
+      const hAttn = document.createElement('h2');
+      hAttn.innerText = 'Attention check';
+      attnDiv.appendChild(hAttn);
+
+      const contentAttn = document.createElement('div');
+      contentAttn.className = 'survey-content';
+      const pAttn = document.createElement('p');
+      pAttn.innerText = "Please select \"Agree\" for this question to confirm you're paying attention.";
+      contentAttn.appendChild(pAttn);
+
+      const listDiv = document.createElement('div');
+      listDiv.className = 'multi-select-list';
+
+      const attnOptions = [
+        'Strongly Disagree',
+        'Disagree',
+        'Agree',
+        'Strongly Agree'
+      ];
+      attnOptions.forEach((opt, i) => {
+        const lab = document.createElement('label');
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'attentionCheck';
+        radio.value = opt;
+        lab.appendChild(radio);
+        // removed the "✅ (correct answer)" text per request
+        const labelText = (opt === 'Agree') ? ' Agree' : ' ' + opt;
+        lab.appendChild(document.createTextNode(labelText));
+        listDiv.appendChild(lab);
+      });
+
+      contentAttn.appendChild(listDiv);
+      attnDiv.appendChild(contentAttn);
+
+      const btnRowAttn = document.createElement('div');
+      btnRowAttn.className = 'btn-row';
+
+      const backBtnAttn = document.createElement('button');
+      backBtnAttn.type = 'button';
+      backBtnAttn.className = 'secondary';
+      backBtnAttn.innerText = 'Back';
+      backBtnAttn.onclick = function() { showScreen(attnIndex - 1); };
+      btnRowAttn.appendChild(backBtnAttn);
+
+      const nextBtnAttn = document.createElement('button');
+      nextBtnAttn.type = 'button';
+      nextBtnAttn.innerText = 'Next';
+      nextBtnAttn.onclick = function() {
+        const sel = document.querySelector('input[name="attentionCheck"]:checked');
+        if (!sel) {
+          alert('Please answer the attention check.');
+          return;
+        }
+        if (sel.value !== 'Agree') {
+          alert('Please select "Agree" to continue.');
+          return;
+        }
+        nextScreen();
+      };
+      btnRowAttn.appendChild(nextBtnAttn);
+
+      attnDiv.appendChild(btnRowAttn);
+      form.appendChild(attnDiv);
+    }
+
   });
 }
 
@@ -397,7 +474,8 @@ function createScarcityScreen() {
   const content = document.createElement('div');
   content.className = 'survey-content';
   const p = document.createElement('p');
-  p.innerText = 'Imagine: You have R250 to last the next 7 days, and you are unsure when your next income will arrive. How would this situation make you feel when deciding where to keep your money?';
+  // made the requested portion bold
+  p.innerHTML = 'Imagine: You have <strong>R250 to last the next 7 days</strong>, and you are unsure when your next income will arrive. How would this situation make you feel when deciding where to keep your money?';
   content.appendChild(p);
 
   const options = [
@@ -460,7 +538,8 @@ function createChoiceScreen() {
   const content = document.createElement('div');
   content.className = 'survey-content';
   const p = document.createElement('p');
-  p.innerText = 'You have R500 to save for 30 days. Where would you prefer to keep it?';
+  // made the requested portion bold
+  p.innerHTML = 'You have <strong>R500 to save for 30 days</strong>. Where would you prefer to keep it?';
   content.appendChild(p);
 
   const opts = [
@@ -693,7 +772,7 @@ function createDebriefScreens() {
   p2a.innerText = 'Earlier, you read a short scenario about managing on a tight budget and answered questions about different ways to keep your money safe.';
   content2.appendChild(p2a);
   const p2b = document.createElement('p');
-  p2b.innerText = 'These questions help us understand how financial stress can influence decision-making and explore ideas that could make managing money easier. Your responses are completely confidential and used only for research purposes.';
+  p2b.innerText = 'These questions help us understand how financial stress can influence decision-making and explore ideas that could make managing money easier. Your responses are completely confidential and will be used only for research purposes.';
   content2.appendChild(p2b);
 
   screenDiv2.appendChild(content2);
@@ -817,6 +896,9 @@ function collectSurveyData() {
   const distress = document.querySelector('input[name="distress"]:checked');
   data.distress = distress ? distress.value : '';
   data.distressExplain = document.getElementById('distressExplain') ? document.getElementById('distressExplain').value.trim() : '';
+  // collect attention check answer
+  const attn = document.querySelector('input[name="attentionCheck"]:checked');
+  data.attentionCheck = attn ? attn.value : '';
   data.timestamp = new Date().toISOString();
   data.screenWhenSubmitted = currentScreen;
   return data;

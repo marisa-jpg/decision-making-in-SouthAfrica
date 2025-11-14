@@ -255,12 +255,19 @@
         </div>
       </div>
 
+      <!-- Qualifying question will be inserted dynamically (see script) -->
+
       <!-- Additional screens are built dynamically -->
     </form>
 
     <div class="center hidden" id="exitMsg">
       <h2>Thank you</h2>
       <p>Your responses have been recorded. Thank you for taking part in this short survey.</p>
+    </div>
+
+    <div class="center hidden" id="ineligibleMsg">
+      <h2>Not eligible</h2>
+      <p>This survey is for people who live in South Africa and who know what a Stokvel and mashonisas are. Thank you for your interest.</p>
     </div>
   </div>
 
@@ -287,10 +294,103 @@ const systems = [
 let totalScreens = 1; // intro counts as 1
 let currentScreen = 1;
 
+function createQualifyingScreen() {
+  const form = document.getElementById('surveyForm');
+  const screenIndex = ++totalScreens;
+  const screenDiv = document.createElement('div');
+  screenDiv.className = 'survey-screen hidden';
+  screenDiv.id = 'screen-' + screenIndex;
+  screenDiv.setAttribute('data-screen-index', screenIndex);
+
+  const h = document.createElement('h2');
+  h.innerText = 'Eligibility';
+  screenDiv.appendChild(h);
+
+  const content = document.createElement('div');
+  content.className = 'survey-content';
+  const p = document.createElement('p');
+  p.innerText = 'Do you live in South Africa and do you know what a Stokvel and mashonisas are?';
+  content.appendChild(p);
+
+  const listDiv = document.createElement('div');
+  listDiv.className = 'multi-select-list';
+  ['Yes','No'].forEach((opt,i) => {
+    const lab = document.createElement('label');
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'qualifySA';
+    radio.value = opt;
+    if (i === 0) radio.required = true;
+    lab.appendChild(radio);
+    lab.appendChild(document.createTextNode(' ' + opt));
+    listDiv.appendChild(lab);
+  });
+  content.appendChild(listDiv);
+
+  screenDiv.appendChild(content);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+
+  const backBtn = document.createElement('button');
+  backBtn.type = 'button';
+  backBtn.className = 'secondary';
+  backBtn.innerText = 'Back';
+  backBtn.onclick = function() { showScreen(screenIndex - 1); };
+  btnRow.appendChild(backBtn);
+
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.innerText = 'Next';
+  nextBtn.onclick = function() {
+    const sel = document.querySelector('input[name="qualifySA"]:checked');
+    if (!sel) {
+      alert('Please answer the qualifying question to continue.');
+      return;
+    }
+    if (sel.value === 'Yes') {
+      nextScreen();
+    } else {
+      // not eligible -> show an ineligible message and stop
+      document.getElementById('surveyForm').classList.add('hidden');
+      document.getElementById('ineligibleMsg').classList.remove('hidden');
+      // send partial/eligibility record if desired (optional)
+      submitPartialEligibility();
+    }
+  };
+  btnRow.appendChild(nextBtn);
+
+  screenDiv.appendChild(btnRow);
+
+  form.appendChild(screenDiv);
+}
+
+function submitPartialEligibility() {
+  // optionally record that someone started but is ineligible; uses beacon if available
+  const data = {
+    timestamp: new Date().toISOString(),
+    partial: true,
+    reason: 'ineligible_qualifying_question',
+    screenWhenExited: currentScreen
+  };
+  if (navigator.sendBeacon) {
+    const body = new URLSearchParams(data).toString();
+    const blob = new Blob([body], { type: "application/x-www-form-urlencoded" });
+    navigator.sendBeacon(ENDPOINT_URL, blob);
+  } else {
+    // best-effort fetch fallback (not blocking)
+    fetch(ENDPOINT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(data).toString()
+    }).catch(()=>{});
+  }
+}
+
 function createStatementScreens() {
   const form = document.getElementById('surveyForm');
 
-  // For each statement create its own screen (Start index at 2)
+  // For each statement create its own screen (Start index at 2+ depending on qualifying screen)
   statements.forEach((stmt, idx) => {
     const screenIndex = ++totalScreens;
     const screenDiv = document.createElement('div');
@@ -475,7 +575,7 @@ function createScarcityScreen() {
   content.className = 'survey-content';
   const p = document.createElement('p');
   // made the requested portion bold
-  p.innerHTML = 'Imagine: You have <strong>R250 to last the next 7 days</strong>, and you are unsure when your next income will arrive. How would this situation make you feel when deciding where to keep your money?';
+  p.innerHTML = 'Imagine: You have <strong>R250 to last the next 7 days</strong>, and you are unsure when your next income will arrive. How would this situation make you feel when deciding where to ke[...]';
   content.appendChild(p);
 
   const options = [
@@ -772,7 +872,7 @@ function createDebriefScreens() {
   p2a.innerText = 'Earlier, you read a short scenario about managing on a tight budget and answered questions about different ways to keep your money safe.';
   content2.appendChild(p2a);
   const p2b = document.createElement('p');
-  p2b.innerText = 'These questions help us understand how financial stress can influence decision-making and explore ideas that could make managing money easier. Your responses are completely confidential and will be used only for research purposes.';
+  p2b.innerText = 'These questions help us understand how financial stress can influence decision-making and explore ideas that could make managing money easier. Your responses are completely confiden[...]';
   content2.appendChild(p2b);
 
   screenDiv2.appendChild(content2);
@@ -820,6 +920,8 @@ function createThankYouScreen() {
 }
 
 function buildAllScreens() {
+  // insert qualifying screen immediately after the intro (screen-1)
+  createQualifyingScreen();
   createStatementScreens();
   createScarcityScreen();
   createChoiceScreen();
@@ -899,6 +1001,9 @@ function collectSurveyData() {
   // collect attention check answer
   const attn = document.querySelector('input[name="attentionCheck"]:checked');
   data.attentionCheck = attn ? attn.value : '';
+  // collect qualifying answer if present
+  const qual = document.querySelector('input[name="qualifySA"]:checked');
+  data.qualifySA = qual ? qual.value : '';
   data.timestamp = new Date().toISOString();
   data.screenWhenSubmitted = currentScreen;
   return data;

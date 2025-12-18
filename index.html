@@ -2,24 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Perceptions of Financial System Safety</title>
+  <title>SENSEA SPA Customer Survey</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
-      --bg: #FAFAFA;
-      --bg-alt: #F5F5F5;
-      --primary: #2E7D83;
-      --primary-alt: #4A7BA7;
-      --button: #3E8E7E;
-      --button-alt: #4E9FD8;
+      --bg: #FFFFFF;
+      --bg-alt: #F9F9F9;
+      --primary: #00ccdf;
+      --primary-alt: #00ccdf;
+      --button: #00ccdf;
+      --button-alt: #00b8cc;
       --error: #E57373;
       --alert: #FBC02D;
       --text: #333333;
-      --progress1: #B2DFDB;
-      --progress2: #26A69A;
+      --progress1: #80e6f0;
+      --progress2: #00ccdf;
       --border: #E0E0E0;
       --radius: 8px;
-      --max-width: 650px;
+      --max-width: 700px;
       --spacing: 1.5rem;
     }
     body {
@@ -61,8 +61,14 @@
       margin: 0.2em 0;
       transition: background 0.18s;
     }
+    button:hover {
+      background: var(--button-alt);
+    }
     button.secondary, .btn.secondary {
-      background: var(--primary-alt);
+      background: #999;
+    }
+    button.secondary:hover {
+      background: #777;
     }
     button:disabled {
       opacity: 0.6;
@@ -104,15 +110,16 @@
       width: 100%;
       height: 16px;
       border-radius: 8px;
-      background: linear-gradient(to right, var(--progress1), var(--progress2));
+      background: var(--bg-alt);
       margin: 1em 0;
       position: relative;
       box-shadow: 0 1px 4px #0001 inset;
       overflow: hidden;
+      border: 1px solid var(--border);
     }
     .progress-bar-fill {
       height: 100%;
-      background: var(--primary-alt);
+      background: var(--primary);
       border-radius: 8px 0 0 8px;
       transition: width 0.4s;
     }
@@ -146,91 +153,18 @@
       display: flex;
       align-items: center;
       margin-bottom: 0.5em;
+      cursor: pointer;
     }
-    .multi-select-list input[type="checkbox"] { margin-right: 0.5em; }
+    .multi-select-list input[type="checkbox"],
+    .multi-select-list input[type="radio"] { 
+      margin-right: 0.5em;
+      cursor: pointer;
+      accent-color: var(--primary);
+    }
     .center { text-align: center; }
-
-    /* Slider styles */
-    .slider-row {
-      margin: 0.6rem 0 1.2rem;
-    }
-    input[type="range"]{
-      display: block;
-      width: 100%;
-      max-width: 100%;
-      box-sizing: border-box;
-      margin: 0.4rem 0 0.4rem;
-      -webkit-appearance: none;
-      background: transparent;
-      height: 10px;
-      border-radius: 6px;
-      outline: none;
-    }
-    input[type="range"]::-webkit-slider-runnable-track{
-      height: 10px;
-      border-radius: 6px;
-      background: linear-gradient(to right, var(--progress1), var(--progress2));
-    }
-    input[type="range"]::-moz-range-track{
-      height: 10px;
-      border-radius: 6px;
-      background: linear-gradient(to right, var(--progress1), var(--progress2));
-    }
-    input[type="range"]::-webkit-slider-thumb{
-      -webkit-appearance: none;
-      width: 18px; height: 18px; border-radius: 50%;
-      background: var(--primary-alt);
-      box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--primary-alt);
-      cursor: pointer;
-      margin-top: -4px;
-    }
-    input[type="range"]::-moz-range-thumb{
-      width: 18px; height: 18px; border-radius: 50%;
-      background: var(--primary-alt);
-      border: 3px solid #fff;
-      box-shadow: 0 0 0 1px var(--primary-alt);
-      cursor: pointer;
-    }
-    .tick-row {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 0.25rem;
-      font-size: 0.92rem;
-      color: #666;
-      user-select: none;
-    }
-    .tick-row span {
-      width: calc(100% / 7);
-      text-align: center;
-      transform: translateX(0);
-    }
-    .slider-label {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.98rem;
-    }
-    .value-bubble {
-      background: var(--primary);
-      color: #fff;
-      padding: 0.15em 0.5em;
-      border-radius: 999px;
-      font-weight: 600;
-      min-width: 28px;
-      text-align: center;
-    }
-
-    .support-link {
-      display: inline-block;
-      margin-top: 0.5rem;
-      color: var(--primary);
-      text-decoration: none;
-    }
 
     @media (max-width: 800px) {
       .survey-container { padding: 1em; max-width: 99vw;}
-      .tick-row span { font-size: 0.8rem; }
     }
   </style>
 </head>
@@ -241,60 +175,39 @@
     </div>
 
     <form id="surveyForm" autocomplete="off">
-      <!-- Screen 1: Intro / Consent -->
+      <!-- Screen 1: Opening Screen -->
       <div class="survey-screen" id="screen-1" data-screen-index="1">
-        <h1>Perceptions of Financial System Safety</h1>
+        <h1>SENSEA SPA Customer Survey</h1>
         <div class="survey-content">
-          <p>This short survey asks about your views of different ways of keeping or saving money.</p>
-          <p>It should take less than 2 minutes. All answers are anonymous, please respond honestly.</p>
-          <p class="small-note">Scale reminder: 1 = Strongly Disagree &nbsp;&nbsp; 7 = Strongly Agree</p>
+          <p><strong>Dear Valued SENSEA Guest,</strong></p>
+          <p>Thank you for being one of our Top 100 SENSEA guests. Your support, trust, and consistent visits mean a great deal to us and have played a major role in shaping SENSEA into what it is today.</p>
+          <p>As we plan SENSEA 2025, we are exploring new ways to make our most loyal customers feel even more valued. This includes introducing new offers, improving benefits and experiences, and ensuring you continue to receive exceptional value every time you visit.</p>
+          <p>At the same time, we want to protect what matters most: delivering exceptional care through our team, maintaining the quality of our facilities, and keeping the SENSEA experience at the standard you expect.</p>
+          <p>Before we introduce any updates, we would truly appreciate your input. This survey will take approximately 5 to 8 minutes, and your feedback will directly guide our decisions.</p>
+          <p><strong>Warmly,</strong><br>SENSEA SPA</p>
         </div>
         <div class="btn-row">
-          <button type="button" onclick="nextScreen()" id="agreeBtn">Start survey</button>
-          <button type="button" class="secondary" onclick="exitSurvey()">Exit</button>
+          <button type="button" onclick="nextScreen()">Start Survey</button>
         </div>
       </div>
 
-      <!-- Qualifying question will be inserted dynamically (see script) -->
-
-      <!-- Additional screens are built dynamically -->
+      <!-- Additional screens will be built dynamically -->
     </form>
 
     <div class="center hidden" id="exitMsg">
-      <h2>Thank you</h2>
-      <p>Your responses have been recorded. Thank you for taking part in this short survey.</p>
-    </div>
-
-    <div class="center hidden" id="ineligibleMsg">
-      <h2>Not eligible</h2>
-      <p>This survey is for people who live in South Africa and who know what a Stokvel and mashonisas are. Thank you for your interest.</p>
+      <h2>Thank You</h2>
+      <p>Your responses have been recorded. Thank you so much for your loyalty, your ongoing love for SENSEA, and for taking the time to share your feedback with us.</p>
     </div>
   </div>
 
 <script>
-const ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycbwdIwB9Kqtns9YDqtWcRwFWYs0LKiNxZ47qEtRWjJU1xu6fQpMgo54DC_Khr7nT6Tc/exec';
-
-// The statements are used directly as the main heading on each statement screen.
-// Each statement screen now also displays "1 = Strongly Disagree 7 = Strongly Agree" under the heading.
-const statements = [
-  "I believe my money is safe in this system.",
-  "I understand how this system works.",
-  "I trust this system to return my money when I need it.",
-  "If something goes wrong, I know how to resolve it.",
-  "I feel in control when using this system.",
-  "I believe people like me use this system safely.",
-  "I would recommend this system to someone else."
-];
-const systems = [
-  { key: "bank", label: "Bank" },
-  { key: "stokvel", label: "Stokvel (community saving group)" },
-  { key: "mashonisa", label: "Mashonisa (informal money lender)" }
-];
+const ENDPOINT_URL = 'https://script.google.com/macros/s/YOUR_GOOGLE_SHEETS_SCRIPT_ID/exec';
 
 let totalScreens = 1; // intro counts as 1
 let currentScreen = 1;
 
-function createQualifyingScreen() {
+// Question 1: Spa Day Pass Pricing Review
+function createQuestion1() {
   const form = document.getElementById('surveyForm');
   const screenIndex = ++totalScreens;
   const screenDiv = document.createElement('div');
@@ -303,29 +216,68 @@ function createQualifyingScreen() {
   screenDiv.setAttribute('data-screen-index', screenIndex);
 
   const h = document.createElement('h2');
-  h.innerText = 'Eligibility';
+  h.innerText = 'Question 1: Spa Day Pass Pricing Review';
   screenDiv.appendChild(h);
 
   const content = document.createElement('div');
   content.className = 'survey-content';
-  const p = document.createElement('p');
-  p.innerText = 'Do you live in South Africa and do you know what a Stokvel and mashonisas are?';
-  content.appendChild(p);
+  
+  const intro = document.createElement('p');
+  intro.innerText = 'After three years, SENSEA is reviewing spa pricing to keep pace with inflation, staff wage increases, and rising operational costs. During this time, we have also invested in expanding and enhancing the SENSEA experience, including adding new art rooms and experience rooms, and improving existing features within the facility.';
+  content.appendChild(intro);
 
-  const listDiv = document.createElement('div');
-  listDiv.className = 'multi-select-list';
-  ['Yes','No'].forEach((opt,i) => {
-    const lab = document.createElement('label');
-    const radio = document.createElement('input');
-    radio.type = 'radio';
-    radio.name = 'qualifySA';
-    radio.value = opt;
-    if (i === 0) radio.required = true;
-    lab.appendChild(radio);
-    lab.appendChild(document.createTextNode(' ' + opt));
-    listDiv.appendChild(lab);
+  const intro2 = document.createElement('p');
+  intro2.innerHTML = '<strong>Please share your thoughts on the following proposed prices (all prices exclude HST):</strong>';
+  content.appendChild(intro2);
+
+  // Four pricing options
+  const pricingOptions = [
+    { name: 'q1_weekday', label: 'Full Day Spa Pass (Monday to Thursday) – $70', desc: 'Does this price feel fair?' },
+    { name: 'q1_weekend', label: 'Full Day Spa Pass (Weekend) – $75', desc: 'Does this price feel fair?' },
+    { name: 'q1_morning', label: 'Prepaid Morning Pass (Monday to Thursday) – $50', desc: 'Does this price feel fair?' },
+    { name: 'q1_twilight', label: 'Twilight Pass after 5:30 pm (Monday to Thursday) – $40', desc: 'Does this price feel fair?' }
+  ];
+
+  pricingOptions.forEach(option => {
+    const label = document.createElement('label');
+    label.innerHTML = `<strong>${option.label}</strong>`;
+    content.appendChild(label);
+    
+    const desc = document.createElement('p');
+    desc.innerText = option.desc;
+    desc.style.marginTop = '0.25rem';
+    content.appendChild(desc);
+
+    const listDiv = document.createElement('div');
+    listDiv.className = 'multi-select-list';
+    ['Very fair', 'Fair', 'Slightly high', 'Too high'].forEach((opt, i) => {
+      const lab = document.createElement('label');
+      const radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = option.name;
+      radio.value = opt;
+      if (i === 0) radio.required = true;
+      lab.appendChild(radio);
+      lab.appendChild(document.createTextNode(' ' + opt));
+      listDiv.appendChild(lab);
+    });
+    content.appendChild(listDiv);
   });
-  content.appendChild(listDiv);
+
+  // Open comment
+  const commentLabel = document.createElement('label');
+  commentLabel.innerHTML = '<strong>Open Comment</strong>';
+  content.appendChild(commentLabel);
+  
+  const commentDesc = document.createElement('p');
+  commentDesc.innerText = 'Do you have any comments or concerns about the pricing overall that you think we should be aware of?';
+  commentDesc.style.marginTop = '0.25rem';
+  content.appendChild(commentDesc);
+
+  const commentArea = document.createElement('textarea');
+  commentArea.name = 'q1_comment';
+  commentArea.placeholder = 'Your feedback...';
+  content.appendChild(commentArea);
 
   screenDiv.appendChild(content);
 
@@ -343,561 +295,21 @@ function createQualifyingScreen() {
   nextBtn.type = 'button';
   nextBtn.innerText = 'Next';
   nextBtn.onclick = function() {
-    const sel = document.querySelector('input[name="qualifySA"]:checked');
-    if (!sel) {
-      alert('Please answer the qualifying question to continue.');
+    if (!validateRadioGroup('q1_weekday') || !validateRadioGroup('q1_weekend') || 
+        !validateRadioGroup('q1_morning') || !validateRadioGroup('q1_twilight')) {
+      alert('Please answer all pricing questions.');
       return;
-    }
-    if (sel.value === 'Yes') {
-      nextScreen();
-    } else {
-      // not eligible -> show an ineligible message and stop
-      document.getElementById('surveyForm').classList.add('hidden');
-      document.getElementById('ineligibleMsg').classList.remove('hidden');
-      // send partial/eligibility record if desired (optional)
-      submitPartialEligibility();
-    }
-  };
-  btnRow.appendChild(nextBtn);
-
-  screenDiv.appendChild(btnRow);
-
-  form.appendChild(screenDiv);
-}
-
-function submitPartialEligibility() {
-  // optionally record that someone started but is ineligible; uses beacon if available
-  const data = {
-    timestamp: new Date().toISOString(),
-    partial: true,
-    reason: 'ineligible_qualifying_question',
-    screenWhenExited: currentScreen
-  };
-  if (navigator.sendBeacon) {
-    const body = new URLSearchParams(data).toString();
-    const blob = new Blob([body], { type: "application/x-www-form-urlencoded" });
-    navigator.sendBeacon(ENDPOINT_URL, blob);
-  } else {
-    // best-effort fetch fallback (not blocking)
-    fetch(ENDPOINT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams(data).toString()
-    }).catch(()=>{});
-  }
-}
-
-function createStatementScreens() {
-  const form = document.getElementById('surveyForm');
-
-  // For each statement create its own screen (Start index at 2+ depending on qualifying screen)
-  statements.forEach((stmt, idx) => {
-    const screenIndex = ++totalScreens;
-    const screenDiv = document.createElement('div');
-    screenDiv.className = 'survey-screen hidden';
-    screenDiv.id = 'screen-' + screenIndex;
-    screenDiv.setAttribute('data-screen-index', screenIndex);
-
-    // Use the full statement as the heading (no "Statement X" headline)
-    const h = document.createElement('h2');
-    h.innerText = stmt;
-    screenDiv.appendChild(h);
-
-    // Add scale reminder under the heading for each statement screen
-    const scaleNote = document.createElement('div');
-    scaleNote.className = 'small-note';
-    scaleNote.innerText = '1 = Strongly Disagree   7 = Strongly Agree';
-    screenDiv.appendChild(scaleNote);
-
-    const content = document.createElement('div');
-    content.className = 'survey-content';
-
-    // Sliders for each system
-    systems.forEach(sys => {
-      const row = document.createElement('div');
-      row.className = 'slider-row';
-      const label = document.createElement('div');
-      label.className = 'slider-label';
-      const left = document.createElement('div');
-      left.innerText = sys.label;
-      const valueBubble = document.createElement('div');
-      valueBubble.className = 'value-bubble';
-      valueBubble.id = `value_${idx+1}_${sys.key}`;
-      valueBubble.innerText = '4'; // default
-
-      label.appendChild(left);
-      label.appendChild(valueBubble);
-      row.appendChild(label);
-
-      const input = document.createElement('input');
-      input.type = 'range';
-      input.min = '1';
-      input.max = '7';
-      input.step = '1';
-      input.value = '4';
-      input.id = `q${idx+1}_${sys.key}`;
-      input.name = `q${idx+1}_${sys.key}`;
-      if (sys.key === systems[0].key) input.required = true;
-
-      input.addEventListener('input', function() {
-        document.getElementById(valueBubble.id).innerText = this.value;
-      });
-
-      row.appendChild(input);
-
-      // numeric ticks 1..7
-      const ticks = document.createElement('div');
-      ticks.className = 'tick-row';
-      for (let t=1; t<=7; t++) {
-        const span = document.createElement('span');
-        span.innerText = t;
-        ticks.appendChild(span);
-      }
-      row.appendChild(ticks);
-      content.appendChild(row);
-    });
-
-    screenDiv.appendChild(content);
-
-    // navigation buttons (Back, Next)
-    const btnRow = document.createElement('div');
-    btnRow.className = 'btn-row';
-
-    const backBtn = document.createElement('button');
-    backBtn.type = 'button';
-    backBtn.className = 'secondary';
-    backBtn.innerText = 'Back';
-    backBtn.onclick = function() { showScreen(screenIndex - 1); };
-    btnRow.appendChild(backBtn);
-
-    const nextBtn = document.createElement('button');
-    nextBtn.type = 'button';
-    nextBtn.innerText = 'Next';
-    nextBtn.onclick = function() { nextScreen(); };
-    btnRow.appendChild(nextBtn);
-
-    screenDiv.appendChild(btnRow);
-
-    form.appendChild(screenDiv);
-
-    // Insert an attention check immediately after the target statement.
-    // The target statement is the one about "I believe people like me use this system ..."
-    // which is statements[5] (0-based index 5). Place the attention check right after it.
-    if (idx === 5) {
-      const attnIndex = ++totalScreens;
-      const attnDiv = document.createElement('div');
-      attnDiv.className = 'survey-screen hidden';
-      attnDiv.id = 'screen-' + attnIndex;
-      attnDiv.setAttribute('data-screen-index', attnIndex);
-
-      const hAttn = document.createElement('h2');
-      hAttn.innerText = 'Attention check';
-      attnDiv.appendChild(hAttn);
-
-      const contentAttn = document.createElement('div');
-      contentAttn.className = 'survey-content';
-      const pAttn = document.createElement('p');
-      pAttn.innerText = "Please select \"Agree\" for this question to confirm you're paying attention.";
-      contentAttn.appendChild(pAttn);
-
-      const listDiv = document.createElement('div');
-      listDiv.className = 'multi-select-list';
-
-      const attnOptions = [
-        'Strongly Disagree',
-        'Disagree',
-        'Agree',
-        'Strongly Agree'
-      ];
-      attnOptions.forEach((opt, i) => {
-        const lab = document.createElement('label');
-        const radio = document.createElement('input');
-        radio.type = 'radio';
-        radio.name = 'attentionCheck';
-        radio.value = opt;
-        lab.appendChild(radio);
-        // removed the "✅ (correct answer)" text per request
-        const labelText = (opt === 'Agree') ? ' Agree' : ' ' + opt;
-        lab.appendChild(document.createTextNode(labelText));
-        listDiv.appendChild(lab);
-      });
-
-      contentAttn.appendChild(listDiv);
-      attnDiv.appendChild(contentAttn);
-
-      const btnRowAttn = document.createElement('div');
-      btnRowAttn.className = 'btn-row';
-
-      const backBtnAttn = document.createElement('button');
-      backBtnAttn.type = 'button';
-      backBtnAttn.className = 'secondary';
-      backBtnAttn.innerText = 'Back';
-      backBtnAttn.onclick = function() { showScreen(attnIndex - 1); };
-      btnRowAttn.appendChild(backBtnAttn);
-
-      const nextBtnAttn = document.createElement('button');
-      nextBtnAttn.type = 'button';
-      nextBtnAttn.innerText = 'Next';
-      nextBtnAttn.onclick = function() {
-        const sel = document.querySelector('input[name="attentionCheck"]:checked');
-        if (!sel) {
-          alert('Please answer the attention check.');
-          return;
-        }
-        if (sel.value !== 'Agree') {
-          alert('Please select "Agree" to continue.');
-          return;
-        }
-        nextScreen();
-      };
-      btnRowAttn.appendChild(nextBtnAttn);
-
-      attnDiv.appendChild(btnRowAttn);
-      form.appendChild(attnDiv);
-    }
-
-  });
-}
-
-function createScarcityScreen() {
-  const form = document.getElementById('surveyForm');
-  const screenIndex = ++totalScreens;
-  const screenDiv = document.createElement('div');
-  screenDiv.className = 'survey-screen hidden';
-  screenDiv.id = 'screen-' + screenIndex;
-  screenDiv.setAttribute('data-screen-index', screenIndex);
-
-  const h = document.createElement('h2');
-  h.innerText = 'Scarcity prime';
-  screenDiv.appendChild(h);
-
-  const content = document.createElement('div');
-  content.className = 'survey-content';
-  const p = document.createElement('p');
-  // made the requested portion bold
-  p.innerHTML = 'Imagine: You have <strong>R250 to last the next 7 days</strong>, and you are unsure when your next income will arrive. How would this situation make you feel when deciding where to keep your money?';
-  content.appendChild(p);
-
-  const options = [
-    'Very stressed',
-    'Somewhat stressed',
-    'Neutral',
-    'Somewhat calm',
-    'Very calm'
-  ];
-  const listDiv = document.createElement('div');
-  listDiv.className = 'multi-select-list';
-  options.forEach((opt,i) => {
-    const lab = document.createElement('label');
-    const radio = document.createElement('input');
-    radio.type = 'radio';
-    radio.name = 'scarcityPrime';
-    radio.value = opt;
-    if (i === 0) radio.required = true;
-    lab.appendChild(radio);
-    lab.appendChild(document.createTextNode(' ' + opt));
-    listDiv.appendChild(lab);
-  });
-  content.appendChild(listDiv);
-
-  screenDiv.appendChild(content);
-
-  const btnRow = document.createElement('div');
-  btnRow.className = 'btn-row';
-
-  const backBtn = document.createElement('button');
-  backBtn.type = 'button';
-  backBtn.className = 'secondary';
-  backBtn.innerText = 'Back';
-  backBtn.onclick = function() { showScreen(screenIndex - 1); };
-  btnRow.appendChild(backBtn);
-
-  const nextBtn = document.createElement('button');
-  nextBtn.type = 'button';
-  nextBtn.innerText = 'Next';
-  nextBtn.onclick = function() { nextScreen(); };
-  btnRow.appendChild(nextBtn);
-
-  screenDiv.appendChild(btnRow);
-
-  form.appendChild(screenDiv);
-}
-
-function createChoiceScreen() {
-  const form = document.getElementById('surveyForm');
-  const screenIndex = ++totalScreens;
-  const screenDiv = document.createElement('div');
-  screenDiv.className = 'survey-screen hidden';
-  screenDiv.id = 'screen-' + screenIndex;
-  screenDiv.setAttribute('data-screen-index', screenIndex);
-
-  const h = document.createElement('h2');
-  h.innerText = 'Behavioural Choice Task';
-  screenDiv.appendChild(h);
-
-  const content = document.createElement('div');
-  content.className = 'survey-content';
-  const p = document.createElement('p');
-  // made the requested portion bold
-  p.innerHTML = 'You have <strong>R500 to save for 30 days</strong>. Where would you prefer to keep it?';
-  content.appendChild(p);
-
-  const opts = [
-    'Bank account',
-    'Stokvel or trusted peer',
-    'Mashonisa',
-    'Cash at home'
-  ];
-  const listDiv = document.createElement('div');
-  listDiv.className = 'multi-select-list';
-  opts.forEach((opt,i) => {
-    const lab = document.createElement('label');
-    const radio = document.createElement('input');
-    radio.type = 'radio';
-    radio.name = 'choiceTask';
-    radio.value = opt;
-    if (i === 0) radio.required = true;
-    lab.appendChild(radio);
-    lab.appendChild(document.createTextNode(' ' + opt));
-    listDiv.appendChild(lab);
-  });
-  content.appendChild(listDiv);
-
-  screenDiv.appendChild(content);
-
-  const btnRow = document.createElement('div');
-  btnRow.className = 'btn-row';
-
-  const backBtn = document.createElement('button');
-  backBtn.type = 'button';
-  backBtn.className = 'secondary';
-  backBtn.innerText = 'Back';
-  backBtn.onclick = function() { showScreen(screenIndex - 1); };
-  btnRow.appendChild(backBtn);
-
-  const nextBtn = document.createElement('button');
-  nextBtn.type = 'button';
-  nextBtn.innerText = 'Next';
-  nextBtn.onclick = function() { nextScreen(); };
-  btnRow.appendChild(nextBtn);
-
-  screenDiv.appendChild(btnRow);
-
-  form.appendChild(screenDiv);
-}
-
-function createDemographicsScreen() {
-  const form = document.getElementById('surveyForm');
-  const screenIndex = ++totalScreens;
-  const screenDiv = document.createElement('div');
-  screenDiv.className = 'survey-screen hidden';
-  screenDiv.id = 'screen-' + screenIndex;
-  screenDiv.setAttribute('data-screen-index', screenIndex);
-
-  const h = document.createElement('h2');
-  h.innerText = 'Demographics';
-  screenDiv.appendChild(h);
-
-  const content = document.createElement('div');
-  content.className = 'survey-content';
-
-  const genderLabel = document.createElement('label');
-  genderLabel.innerText = 'Gender';
-  content.appendChild(genderLabel);
-  const genderDiv = document.createElement('div');
-  genderDiv.className = 'multi-select-list';
-  ['Female','Male','Other','Prefer not to say'].forEach((g,i) => {
-    const lab = document.createElement('label');
-    const radio = document.createElement('input');
-    radio.type = 'radio';
-    radio.name = 'gender';
-    radio.value = g;
-    if (i === 0) radio.required = true;
-    lab.appendChild(radio);
-    lab.appendChild(document.createTextNode(' ' + g));
-    genderDiv.appendChild(lab);
-  });
-  content.appendChild(genderDiv);
-
-  const incomeLabel = document.createElement('label');
-  incomeLabel.innerText = 'Income band (per month)';
-  content.appendChild(incomeLabel);
-  const incomeDiv = document.createElement('div');
-  incomeDiv.className = 'multi-select-list';
-  ['< R2 000','R2 000–R5 000','R5 000–R10 000','> R10 000'].forEach((inc,i) => {
-    const lab = document.createElement('label');
-    const radio = document.createElement('input');
-    radio.type = 'radio';
-    radio.name = 'incomeBand';
-    radio.value = inc;
-    if (i === 0) radio.required = true;
-    lab.appendChild(radio);
-    lab.appendChild(document.createTextNode(' ' + inc));
-    incomeDiv.appendChild(lab);
-  });
-  content.appendChild(incomeDiv);
-
-  screenDiv.appendChild(content);
-
-  const btnRow = document.createElement('div');
-  btnRow.className = 'btn-row';
-
-  const backBtn = document.createElement('button');
-  backBtn.type = 'button';
-  backBtn.className = 'secondary';
-  backBtn.innerText = 'Back';
-  backBtn.onclick = function() { showScreen(screenIndex - 1); };
-  btnRow.appendChild(backBtn);
-
-  const nextBtn = document.createElement('button');
-  nextBtn.type = 'button';
-  nextBtn.innerText = 'Next';
-  nextBtn.onclick = function() { finishAndProceedToDebrief(); };
-  btnRow.appendChild(nextBtn);
-
-  screenDiv.appendChild(btnRow);
-
-  form.appendChild(screenDiv);
-}
-
-function createDebriefScreens() {
-  const form = document.getElementById('surveyForm');
-
-  // Debrief & Distress Check (end)
-  const screenIndex1 = ++totalScreens;
-  const screenDiv1 = document.createElement('div');
-  screenDiv1.className = 'survey-screen hidden';
-  screenDiv1.id = 'screen-' + screenIndex1;
-  screenDiv1.setAttribute('data-screen-index', screenIndex1);
-
-  const h1 = document.createElement('h2');
-  h1.innerText = 'Debrief & Distress Check (end)';
-  screenDiv1.appendChild(h1);
-
-  const content1 = document.createElement('div');
-  content1.className = 'survey-content';
-  const p1 = document.createElement('p');
-  p1.innerText = 'Did any part of the scenario make you uncomfortable?';
-  content1.appendChild(p1);
-
-  const listDiv = document.createElement('div');
-  listDiv.className = 'multi-select-list';
-  ['Yes','No'].forEach((opt,i) => {
-    const lab = document.createElement('label');
-    const radio = document.createElement('input');
-    radio.type = 'radio';
-    radio.name = 'distress';
-    radio.value = opt;
-    if (i === 0) radio.required = true;
-    radio.addEventListener('change', function() {
-      toggleDistressExplain(opt === 'Yes');
-    });
-    lab.appendChild(radio);
-    lab.appendChild(document.createTextNode(' ' + opt));
-    listDiv.appendChild(lab);
-  });
-  content1.appendChild(listDiv);
-
-  const explainLabel = document.createElement('label');
-  explainLabel.innerText = 'If yes, please briefly tell us which part:';
-  explainLabel.id = 'explainLabel';
-  explainLabel.className = 'hidden';
-  content1.appendChild(explainLabel);
-
-  const explainArea = document.createElement('textarea');
-  explainArea.name = 'distressExplain';
-  explainArea.id = 'distressExplain';
-  explainArea.placeholder = 'Briefly describe which part made you uncomfortable...';
-  explainArea.maxLength = 200;
-  explainArea.className = 'hidden';
-  content1.appendChild(explainArea);
-
-  const supportLink = document.createElement('a');
-  supportLink.href = 'https://www.sadag.org/';
-  supportLink.target = '_blank';
-  supportLink.className = 'support-link hidden';
-  supportLink.id = 'supportLink';
-  supportLink.innerText = 'Support resources: South African Depression & Anxiety Group';
-  content1.appendChild(supportLink);
-
-  screenDiv1.appendChild(content1);
-
-  const btnRow1 = document.createElement('div');
-  btnRow1.className = 'btn-row';
-
-  const backBtn1 = document.createElement('button');
-  backBtn1.type = 'button';
-  backBtn1.className = 'secondary';
-  backBtn1.innerText = 'Back';
-  backBtn1.onclick = function() { showScreen(screenIndex1 - 1); };
-  btnRow1.appendChild(backBtn1);
-
-  const nextBtn1 = document.createElement('button');
-  nextBtn1.type = 'button';
-  nextBtn1.innerText = 'Next';
-  nextBtn1.onclick = function() {
-    if (!document.querySelector('input[name="distress"]:checked')) {
-      alert('Please answer whether any part made you uncomfortable.');
-      return;
-    }
-    const sel = document.querySelector('input[name="distress"]:checked').value;
-    if (sel === 'Yes') {
-      const txt = document.getElementById('distressExplain').value.trim();
-      if (!txt) {
-        alert('You selected Yes. Please briefly indicate which part made you uncomfortable.');
-        return;
-      }
     }
     nextScreen();
   };
-  btnRow1.appendChild(nextBtn1);
+  btnRow.appendChild(nextBtn);
 
-  screenDiv1.appendChild(btnRow1);
-  form.appendChild(screenDiv1);
-
-  // Debrief text (short)
-  const screenIndex2 = ++totalScreens;
-  const screenDiv2 = document.createElement('div');
-  screenDiv2.className = 'survey-screen hidden';
-  screenDiv2.id = 'screen-' + screenIndex2;
-  screenDiv2.setAttribute('data-screen-index', screenIndex2);
-
-  const h2 = document.createElement('h2');
-  h2.innerText = 'Debrief';
-  screenDiv2.appendChild(h2);
-
-  const content2 = document.createElement('div');
-  content2.className = 'survey-content';
-  const p2a = document.createElement('p');
-  p2a.innerText = 'Earlier, you read a short scenario about managing on a tight budget and answered questions about different ways to keep your money safe.';
-  content2.appendChild(p2a);
-  const p2b = document.createElement('p');
-  p2b.innerText = 'These questions help us understand how financial stress can influence decision-making and explore ideas that could make managing money easier. Your responses are confidential, thank you for taking part in the survey.';
-  content2.appendChild(p2b);
-
-  screenDiv2.appendChild(content2);
-
-  const btnRow2 = document.createElement('div');
-  btnRow2.className = 'btn-row';
-
-  const backBtn2 = document.createElement('button');
-  backBtn2.type = 'button';
-  backBtn2.className = 'secondary';
-  backBtn2.innerText = 'Back';
-  backBtn2.onclick = function() { showScreen(screenIndex2 - 1); };
-  btnRow2.appendChild(backBtn2);
-
-  const submitBtn = document.createElement('button');
-  submitBtn.type = 'button';
-  submitBtn.innerText = 'Finish and submit';
-  submitBtn.onclick = function() { submitSurvey(true); };
-  btnRow2.appendChild(submitBtn);
-
-  screenDiv2.appendChild(btnRow2);
-  form.appendChild(screenDiv2);
+  screenDiv.appendChild(btnRow);
+  form.appendChild(screenDiv);
 }
 
-function createThankYouScreen() {
+// Question 2: New Membership Offering Test
+function createQuestion2() {
   const form = document.getElementById('surveyForm');
   const screenIndex = ++totalScreens;
   const screenDiv = document.createElement('div');
@@ -906,28 +318,644 @@ function createThankYouScreen() {
   screenDiv.setAttribute('data-screen-index', screenIndex);
 
   const h = document.createElement('h2');
-  h.innerText = 'End of Survey';
+  h.innerText = 'Question 2: New Membership Offering Test';
   screenDiv.appendChild(h);
 
   const content = document.createElement('div');
   content.className = 'survey-content';
-  const p = document.createElement('p');
-  p.innerText = 'Thank you for completing the study! Your answers have been submitted.';
-  content.appendChild(p);
+  
+  const intro = document.createElement('p');
+  intro.innerText = 'We are considering introducing a new off-peak monthly membership. The Super Pass can be cancelled at any time and is not a fixed-term membership.';
+  content.appendChild(intro);
+
+  const membership = document.createElement('p');
+  membership.innerHTML = '<strong>Super Pass – $199 per month</strong><br>Unlimited weekday access during off-peak times. Excludes HST.';
+  content.appendChild(membership);
+
+  // Interest level
+  const interestLabel = document.createElement('label');
+  interestLabel.innerHTML = '<strong>Does this membership interest you?</strong>';
+  content.appendChild(interestLabel);
+
+  const interestDiv = document.createElement('div');
+  interestDiv.className = 'multi-select-list';
+  ['Very interested', 'Somewhat interested', 'Neutral', 'Not interested'].forEach((opt, i) => {
+    const lab = document.createElement('label');
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'q2_interest';
+    radio.value = opt;
+    if (i === 0) radio.required = true;
+    lab.appendChild(radio);
+    lab.appendChild(document.createTextNode(' ' + opt));
+    interestDiv.appendChild(lab);
+  });
+  content.appendChild(interestDiv);
+
+  // Price fairness
+  const fairLabel = document.createElement('label');
+  fairLabel.innerHTML = '<strong>Does the price feel fair for what is offered?</strong>';
+  content.appendChild(fairLabel);
+
+  const fairDiv = document.createElement('div');
+  fairDiv.className = 'multi-select-list';
+  ['Very fair', 'Fair', 'Slightly high', 'Too high'].forEach((opt, i) => {
+    const lab = document.createElement('label');
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'q2_price';
+    radio.value = opt;
+    if (i === 0) radio.required = true;
+    lab.appendChild(radio);
+    lab.appendChild(document.createTextNode(' ' + opt));
+    fairDiv.appendChild(lab);
+  });
+  content.appendChild(fairDiv);
+
+  // Feedback
+  const feedbackLabel = document.createElement('label');
+  feedbackLabel.innerHTML = '<strong>Open Comment</strong>';
+  content.appendChild(feedbackLabel);
+  
+  const feedbackDesc = document.createElement('p');
+  feedbackDesc.innerText = 'Do you have any feedback or suggestions regarding this membership?';
+  feedbackDesc.style.marginTop = '0.25rem';
+  content.appendChild(feedbackDesc);
+
+  const feedbackArea = document.createElement('textarea');
+  feedbackArea.name = 'q2_feedback';
+  feedbackArea.placeholder = 'Your feedback...';
+  content.appendChild(feedbackArea);
+
+  // Trial signup
+  const trialLabel = document.createElement('label');
+  trialLabel.innerHTML = '<strong>Are you interested?</strong>';
+  content.appendChild(trialLabel);
+  
+  const trialDesc = document.createElement('p');
+  trialDesc.innerText = 'We are offering 10 trial memberships to start January 2025, are you interested in signing up for a once off trial?';
+  trialDesc.style.marginTop = '0.25rem';
+  content.appendChild(trialDesc);
+
+  const trialDiv = document.createElement('div');
+  trialDiv.className = 'multi-select-list';
+  ['Yes', 'No', 'Maybe'].forEach((opt, i) => {
+    const lab = document.createElement('label');
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'q2_trial';
+    radio.value = opt;
+    if (i === 0) radio.required = true;
+    lab.appendChild(radio);
+    lab.appendChild(document.createTextNode(' ' + opt));
+    trialDiv.appendChild(lab);
+  });
+  content.appendChild(trialDiv);
+
   screenDiv.appendChild(content);
 
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+
+  const backBtn = document.createElement('button');
+  backBtn.type = 'button';
+  backBtn.className = 'secondary';
+  backBtn.innerText = 'Back';
+  backBtn.onclick = function() { showScreen(screenIndex - 1); };
+  btnRow.appendChild(backBtn);
+
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.innerText = 'Next';
+  nextBtn.onclick = function() {
+    if (!validateRadioGroup('q2_interest') || !validateRadioGroup('q2_price') || !validateRadioGroup('q2_trial')) {
+      alert('Please answer all questions.');
+      return;
+    }
+    nextScreen();
+  };
+  btnRow.appendChild(nextBtn);
+
+  screenDiv.appendChild(btnRow);
+  form.appendChild(screenDiv);
+}
+
+// Question 3: Social and Ritual Events
+function createQuestion3() {
+  const form = document.getElementById('surveyForm');
+  const screenIndex = ++totalScreens;
+  const screenDiv = document.createElement('div');
+  screenDiv.className = 'survey-screen hidden';
+  screenDiv.id = 'screen-' + screenIndex;
+  screenDiv.setAttribute('data-screen-index', screenIndex);
+
+  const h = document.createElement('h2');
+  h.innerText = 'Question 3: Social and Ritual Events';
+  screenDiv.appendChild(h);
+
+  const content = document.createElement('div');
+  content.className = 'survey-content';
+  
+  const intro = document.createElement('p');
+  intro.innerText = 'We are developing event-based social rituals focused on connection, intention, and guided experience.';
+  content.appendChild(intro);
+
+  const desc = document.createElement('p');
+  desc.innerHTML = 'These are 2-hour guided ritual events that include hot and cold exposure, breathwork, intention setting, flow, and themed discussion. These events do not include full spa access (price exclude HST):<br><br><strong>Social SENSEA Drop-in Events – $50</strong>';
+  content.appendChild(desc);
+
+  // Interest
+  const interestLabel = document.createElement('label');
+  interestLabel.innerHTML = '<strong>Does this concept interest you?</strong>';
+  content.appendChild(interestLabel);
+
+  const interestDiv = document.createElement('div');
+  interestDiv.className = 'multi-select-list';
+  ['Very interested', 'Somewhat interested', 'Neutral', 'Not interested'].forEach((opt, i) => {
+    const lab = document.createElement('label');
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'q3_interest';
+    radio.value = opt;
+    if (i === 0) radio.required = true;
+    lab.appendChild(radio);
+    lab.appendChild(document.createTextNode(' ' + opt));
+    interestDiv.appendChild(lab);
+  });
+  content.appendChild(interestDiv);
+
+  // Price fairness
+  const fairLabel = document.createElement('label');
+  fairLabel.innerHTML = '<strong>Does the price feel fair?</strong>';
+  content.appendChild(fairLabel);
+
+  const fairDiv = document.createElement('div');
+  fairDiv.className = 'multi-select-list';
+  ['Very fair', 'Fair', 'Slightly high', 'Too high'].forEach((opt, i) => {
+    const lab = document.createElement('label');
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'q3_price';
+    radio.value = opt;
+    if (i === 0) radio.required = true;
+    lab.appendChild(radio);
+    lab.appendChild(document.createTextNode(' ' + opt));
+    fairDiv.appendChild(lab);
+  });
+  content.appendChild(fairDiv);
+
+  // Feedback
+  const feedbackLabel = document.createElement('label');
+  feedbackLabel.innerHTML = '<strong>Open Comment</strong>';
+  content.appendChild(feedbackLabel);
+  
+  const feedbackDesc = document.createElement('p');
+  feedbackDesc.innerText = 'What are your thoughts on this type of event?';
+  feedbackDesc.style.marginTop = '0.25rem';
+  content.appendChild(feedbackDesc);
+
+  const feedbackArea = document.createElement('textarea');
+  feedbackArea.name = 'q3_feedback';
+  feedbackArea.placeholder = 'Your thoughts...';
+  content.appendChild(feedbackArea);
+
+  screenDiv.appendChild(content);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+
+  const backBtn = document.createElement('button');
+  backBtn.type = 'button';
+  backBtn.className = 'secondary';
+  backBtn.innerText = 'Back';
+  backBtn.onclick = function() { showScreen(screenIndex - 1); };
+  btnRow.appendChild(backBtn);
+
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.innerText = 'Next';
+  nextBtn.onclick = function() {
+    if (!validateRadioGroup('q3_interest') || !validateRadioGroup('q3_price')) {
+      alert('Please answer all questions.');
+      return;
+    }
+    nextScreen();
+  };
+  btnRow.appendChild(nextBtn);
+
+  screenDiv.appendChild(btnRow);
+  form.appendChild(screenDiv);
+}
+
+// Question 4: Spa Opening Hours Review
+function createQuestion4() {
+  const form = document.getElementById('surveyForm');
+  const screenIndex = ++totalScreens;
+  const screenDiv = document.createElement('div');
+  screenDiv.className = 'survey-screen hidden';
+  screenDiv.id = 'screen-' + screenIndex;
+  screenDiv.setAttribute('data-screen-index', screenIndex);
+
+  const h = document.createElement('h2');
+  h.innerText = 'Question 4: Spa Opening Hours Review (Off-Peak)';
+  screenDiv.appendChild(h);
+
+  const content = document.createElement('div');
+  content.className = 'survey-content';
+  
+  const intro = document.createElement('p');
+  intro.innerText = 'To better align staffing and usage, we are reviewing off-peak opening hours on weekdays and Sundays.';
+  content.appendChild(intro);
+
+  // Usage
+  const usageLabel = document.createElement('label');
+  usageLabel.innerHTML = '<strong>Do you currently use the spa after 5:00 pm?</strong>';
+  content.appendChild(usageLabel);
+
+  const usageDiv = document.createElement('div');
+  usageDiv.className = 'multi-select-list';
+  ['Often', 'Sometimes', 'Rarely', 'Never'].forEach((opt, i) => {
+    const lab = document.createElement('label');
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'q4_usage';
+    radio.value = opt;
+    if (i === 0) radio.required = true;
+    lab.appendChild(radio);
+    lab.appendChild(document.createTextNode(' ' + opt));
+    usageDiv.appendChild(lab);
+  });
+  content.appendChild(usageDiv);
+
+  // Impact
+  const impactLabel = document.createElement('label');
+  impactLabel.innerHTML = '<strong>If we adjusted closing times to 5:00 pm instead of 7:00 pm on Monday to Thursday and Sundays, would this affect you?</strong>';
+  content.appendChild(impactLabel);
+
+  const impactDiv = document.createElement('div');
+  impactDiv.className = 'multi-select-list';
+  ['Yes, significantly', 'Yes, slightly', 'No impact', 'Not applicable'].forEach((opt, i) => {
+    const lab = document.createElement('label');
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'q4_impact';
+    radio.value = opt;
+    if (i === 0) radio.required = true;
+    lab.appendChild(radio);
+    lab.appendChild(document.createTextNode(' ' + opt));
+    impactDiv.appendChild(lab);
+  });
+  content.appendChild(impactDiv);
+
+  // Feedback
+  const feedbackLabel = document.createElement('label');
+  feedbackLabel.innerHTML = '<strong>Open Comment</strong>';
+  content.appendChild(feedbackLabel);
+  
+  const feedbackDesc = document.createElement('p');
+  feedbackDesc.innerText = 'Please share any thoughts regarding opening hours.';
+  feedbackDesc.style.marginTop = '0.25rem';
+  content.appendChild(feedbackDesc);
+
+  const feedbackArea = document.createElement('textarea');
+  feedbackArea.name = 'q4_feedback';
+  feedbackArea.placeholder = 'Your thoughts...';
+  content.appendChild(feedbackArea);
+
+  screenDiv.appendChild(content);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+
+  const backBtn = document.createElement('button');
+  backBtn.type = 'button';
+  backBtn.className = 'secondary';
+  backBtn.innerText = 'Back';
+  backBtn.onclick = function() { showScreen(screenIndex - 1); };
+  btnRow.appendChild(backBtn);
+
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.innerText = 'Next';
+  nextBtn.onclick = function() {
+    if (!validateRadioGroup('q4_usage') || !validateRadioGroup('q4_impact')) {
+      alert('Please answer all questions.');
+      return;
+    }
+    nextScreen();
+  };
+  btnRow.appendChild(nextBtn);
+
+  screenDiv.appendChild(btnRow);
+  form.appendChild(screenDiv);
+}
+
+// Question 5: Loyalty Program
+function createQuestion5() {
+  const form = document.getElementById('surveyForm');
+  const screenIndex = ++totalScreens;
+  const screenDiv = document.createElement('div');
+  screenDiv.className = 'survey-screen hidden';
+  screenDiv.id = 'screen-' + screenIndex;
+  screenDiv.setAttribute('data-screen-index', screenIndex);
+
+  const h = document.createElement('h2');
+  h.innerText = 'Question 5: Loyalty Program';
+  screenDiv.appendChild(h);
+
+  const content = document.createElement('div');
+  content.className = 'survey-content';
+  
+  const intro = document.createElement('p');
+  intro.innerText = 'We are launching a new loyalty program in January.';
+  content.appendChild(intro);
+
+  const program = document.createElement('p');
+  program.innerHTML = '<strong>Every 10th visit is on us</strong>';
+  content.appendChild(program);
+
+  // Appeal
+  const appealLabel = document.createElement('label');
+  appealLabel.innerHTML = '<strong>Does this loyalty program appeal to you?</strong>';
+  content.appendChild(appealLabel);
+
+  const appealDiv = document.createElement('div');
+  appealDiv.className = 'multi-select-list';
+  ['Yes, very much', 'Somewhat', 'Neutral', 'Not appealing'].forEach((opt, i) => {
+    const lab = document.createElement('label');
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'q5_appeal';
+    radio.value = opt;
+    if (i === 0) radio.required = true;
+    lab.appendChild(radio);
+    lab.appendChild(document.createTextNode(' ' + opt));
+    appealDiv.appendChild(lab);
+  });
+  content.appendChild(appealDiv);
+
+  // Feedback
+  const feedbackLabel = document.createElement('label');
+  feedbackLabel.innerHTML = '<strong>Open Comment</strong>';
+  content.appendChild(feedbackLabel);
+  
+  const feedbackDesc = document.createElement('p');
+  feedbackDesc.innerText = 'Do you have any feedback or ideas for our loyalty program?';
+  feedbackDesc.style.marginTop = '0.25rem';
+  content.appendChild(feedbackDesc);
+
+  const feedbackArea = document.createElement('textarea');
+  feedbackArea.name = 'q5_feedback';
+  feedbackArea.placeholder = 'Your feedback...';
+  content.appendChild(feedbackArea);
+
+  screenDiv.appendChild(content);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+
+  const backBtn = document.createElement('button');
+  backBtn.type = 'button';
+  backBtn.className = 'secondary';
+  backBtn.innerText = 'Back';
+  backBtn.onclick = function() { showScreen(screenIndex - 1); };
+  btnRow.appendChild(backBtn);
+
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.innerText = 'Next';
+  nextBtn.onclick = function() {
+    if (!validateRadioGroup('q5_appeal')) {
+      alert('Please answer the question.');
+      return;
+    }
+    nextScreen();
+  };
+  btnRow.appendChild(nextBtn);
+
+  screenDiv.appendChild(btnRow);
+  form.appendChild(screenDiv);
+}
+
+// Question 6: Treatments and Additional Offerings
+function createQuestion6() {
+  const form = document.getElementById('surveyForm');
+  const screenIndex = ++totalScreens;
+  const screenDiv = document.createElement('div');
+  screenDiv.className = 'survey-screen hidden';
+  screenDiv.id = 'screen-' + screenIndex;
+  screenDiv.setAttribute('data-screen-index', screenIndex);
+
+  const h = document.createElement('h2');
+  h.innerText = 'Question 6: Treatments and Additional Offerings';
+  screenDiv.appendChild(h);
+
+  const content = document.createElement('div');
+  content.className = 'survey-content';
+  
+  const intro = document.createElement('p');
+  intro.innerHTML = '<strong>Please share your thoughts on our current treatment pricing (all prices exclude HST):</strong>';
+  content.appendChild(intro);
+
+  // Treatment pricing
+  const treatments = [
+    { name: 'q6_single', label: 'Single RMT Massage Bundle – $185' },
+    { name: 'q6_couple', label: 'Couple\'s Massage Bundle – $350' }
+  ];
+
+  treatments.forEach(treatment => {
+    const label = document.createElement('label');
+    label.innerHTML = `<strong>${treatment.label}</strong>`;
+    content.appendChild(label);
+    
+    const desc = document.createElement('p');
+    desc.innerText = 'Do these prices feel fair?';
+    desc.style.marginTop = '0.25rem';
+    content.appendChild(desc);
+
+    const listDiv = document.createElement('div');
+    listDiv.className = 'multi-select-list';
+    ['Very fair', 'Fair', 'Slightly high', 'Too high'].forEach((opt, i) => {
+      const lab = document.createElement('label');
+      const radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = treatment.name;
+      radio.value = opt;
+      if (i === 0) radio.required = true;
+      lab.appendChild(radio);
+      lab.appendChild(document.createTextNode(' ' + opt));
+      listDiv.appendChild(lab);
+    });
+    content.appendChild(listDiv);
+  });
+
+  // Open questions
+  const q1Label = document.createElement('label');
+  q1Label.innerHTML = '<strong>What do you think of the treatments currently offered at SENSEA?</strong>';
+  content.appendChild(q1Label);
+
+  const q1Area = document.createElement('textarea');
+  q1Area.name = 'q6_current';
+  q1Area.placeholder = 'Your thoughts...';
+  content.appendChild(q1Area);
+
+  const q2Label = document.createElement('label');
+  q2Label.innerHTML = '<strong>How could our treatments be improved?</strong>';
+  content.appendChild(q2Label);
+
+  const q2Area = document.createElement('textarea');
+  q2Area.name = 'q6_improve';
+  q2Area.placeholder = 'Your suggestions...';
+  content.appendChild(q2Area);
+
+  const q3Label = document.createElement('label');
+  q3Label.innerHTML = '<strong>What other treatments or wellness services would you like us to consider adding?</strong>';
+  content.appendChild(q3Label);
+
+  const q3Area = document.createElement('textarea');
+  q3Area.name = 'q6_new';
+  q3Area.placeholder = 'Your ideas...';
+  content.appendChild(q3Area);
+
+  screenDiv.appendChild(content);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+
+  const backBtn = document.createElement('button');
+  backBtn.type = 'button';
+  backBtn.className = 'secondary';
+  backBtn.innerText = 'Back';
+  backBtn.onclick = function() { showScreen(screenIndex - 1); };
+  btnRow.appendChild(backBtn);
+
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.innerText = 'Next';
+  nextBtn.onclick = function() {
+    if (!validateRadioGroup('q6_single') || !validateRadioGroup('q6_couple')) {
+      alert('Please answer all pricing questions.');
+      return;
+    }
+    nextScreen();
+  };
+  btnRow.appendChild(nextBtn);
+
+  screenDiv.appendChild(btnRow);
+  form.appendChild(screenDiv);
+}
+
+// Question 7: Areas for Improvement
+function createQuestion7() {
+  const form = document.getElementById('surveyForm');
+  const screenIndex = ++totalScreens;
+  const screenDiv = document.createElement('div');
+  screenDiv.className = 'survey-screen hidden';
+  screenDiv.id = 'screen-' + screenIndex;
+  screenDiv.setAttribute('data-screen-index', screenIndex);
+
+  const h = document.createElement('h2');
+  h.innerText = 'Question 7: Areas for Improvement';
+  screenDiv.appendChild(h);
+
+  const content = document.createElement('div');
+  content.className = 'survey-content';
+  
+  const label = document.createElement('label');
+  label.innerHTML = '<strong>Do you know of any areas where SENSEA could improve or better support your experience?</strong>';
+  content.appendChild(label);
+
+  const area = document.createElement('textarea');
+  area.name = 'q7_improvement';
+  area.placeholder = 'Your feedback...';
+  content.appendChild(area);
+
+  screenDiv.appendChild(content);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+
+  const backBtn = document.createElement('button');
+  backBtn.type = 'button';
+  backBtn.className = 'secondary';
+  backBtn.innerText = 'Back';
+  backBtn.onclick = function() { showScreen(screenIndex - 1); };
+  btnRow.appendChild(backBtn);
+
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.innerText = 'Next';
+  nextBtn.onclick = function() { nextScreen(); };
+  btnRow.appendChild(nextBtn);
+
+  screenDiv.appendChild(btnRow);
+  form.appendChild(screenDiv);
+}
+
+// Final Thoughts
+function createFinalThoughts() {
+  const form = document.getElementById('surveyForm');
+  const screenIndex = ++totalScreens;
+  const screenDiv = document.createElement('div');
+  screenDiv.className = 'survey-screen hidden';
+  screenDiv.id = 'screen-' + screenIndex;
+  screenDiv.setAttribute('data-screen-index', screenIndex);
+
+  const h = document.createElement('h2');
+  h.innerText = 'Final Thoughts';
+  screenDiv.appendChild(h);
+
+  const content = document.createElement('div');
+  content.className = 'survey-content';
+  
+  const label = document.createElement('label');
+  label.innerHTML = '<strong>Is there anything else you would like to share with us as we plan the next phase of SENSEA?</strong>';
+  content.appendChild(label);
+
+  const area = document.createElement('textarea');
+  area.name = 'final_thoughts';
+  area.placeholder = 'Your thoughts...';
+  content.appendChild(area);
+
+  const thanks = document.createElement('p');
+  thanks.innerHTML = '<em>Thank you so much for your loyalty, your ongoing love for SENSEA, and for taking the time to share your feedback with us.</em>';
+  content.appendChild(thanks);
+
+  screenDiv.appendChild(content);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+
+  const backBtn = document.createElement('button');
+  backBtn.type = 'button';
+  backBtn.className = 'secondary';
+  backBtn.innerText = 'Back';
+  backBtn.onclick = function() { showScreen(screenIndex - 1); };
+  btnRow.appendChild(backBtn);
+
+  const submitBtn = document.createElement('button');
+  submitBtn.type = 'button';
+  submitBtn.innerText = 'Submit Survey';
+  submitBtn.onclick = function() { submitSurvey(); };
+  btnRow.appendChild(submitBtn);
+
+  screenDiv.appendChild(btnRow);
   form.appendChild(screenDiv);
 }
 
 function buildAllScreens() {
-  // insert qualifying screen immediately after the intro (screen-1)
-  createQualifyingScreen();
-  createStatementScreens();
-  createScarcityScreen();
-  createChoiceScreen();
-  createDemographicsScreen();
-  createDebriefScreens();
-  createThankYouScreen();
+  createQuestion1();
+  createQuestion2();
+  createQuestion3();
+  createQuestion4();
+  createQuestion5();
+  createQuestion6();
+  createQuestion7();
+  createFinalThoughts();
+}
+
+function validateRadioGroup(name) {
+  return document.querySelector(`input[name="${name}"]:checked`) !== null;
 }
 
 function showScreen(n) {
@@ -945,75 +973,74 @@ function nextScreen() {
   if (next <= totalScreens) showScreen(next);
 }
 
-function exitSurvey() {
-  document.getElementById('surveyForm').classList.add('hidden');
-  document.getElementById('exitMsg').classList.remove('hidden');
-}
-
-function toggleDistressExplain(show) {
-  const label = document.getElementById('explainLabel');
-  const area = document.getElementById('distressExplain');
-  const link = document.getElementById('supportLink');
-  if (show) {
-    label.classList.remove('hidden');
-    area.classList.remove('hidden');
-    link.classList.remove('hidden');
-    area.required = true;
-  } else {
-    label.classList.add('hidden');
-    area.classList.add('hidden');
-    link.classList.add('hidden');
-    area.required = false;
-    area.value = '';
-  }
-}
-
-function finishAndProceedToDebrief() {
-  if (!document.querySelector('input[name="gender"]:checked') || !document.querySelector('input[name="incomeBand"]:checked')) {
-    alert('Please complete the demographics questions.');
-    return;
-  }
-  const idx = findScreenIndexByHeading('Debrief & Distress Check (end)');
-  if (idx) showScreen(idx);
-  else nextScreen();
-}
-
 function collectSurveyData() {
   const data = {};
-  statements.forEach((stmt, idx) => {
-    systems.forEach(sys => {
-      const name = `q${idx+1}_${sys.key}`;
-      const el = document.getElementById(name);
-      data[name] = el ? el.value : '';
-    });
+  
+  // Question 1
+  ['q1_weekday', 'q1_weekend', 'q1_morning', 'q1_twilight'].forEach(name => {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    data[name] = el ? el.value : '';
   });
-  const sp = document.querySelector('input[name="scarcityPrime"]:checked');
-  data.scarcityPrime = sp ? sp.value : '';
-  const choice = document.querySelector('input[name="choiceTask"]:checked');
-  data.choiceTask = choice ? choice.value : '';
-  const gender = document.querySelector('input[name="gender"]:checked');
-  const income = document.querySelector('input[name="incomeBand"]:checked');
-  data.gender = gender ? gender.value : '';
-  data.incomeBand = income ? income.value : '';
-  const distress = document.querySelector('input[name="distress"]:checked');
-  data.distress = distress ? distress.value : '';
-  data.distressExplain = document.getElementById('distressExplain') ? document.getElementById('distressExplain').value.trim() : '';
-  // collect attention check answer
-  const attn = document.querySelector('input[name="attentionCheck"]:checked');
-  data.attentionCheck = attn ? attn.value : '';
-  // collect qualifying answer if present
-  const qual = document.querySelector('input[name="qualifySA"]:checked');
-  data.qualifySA = qual ? qual.value : '';
+  const q1Comment = document.querySelector('textarea[name="q1_comment"]');
+  data.q1_comment = q1Comment ? q1Comment.value : '';
+  
+  // Question 2
+  ['q2_interest', 'q2_price', 'q2_trial'].forEach(name => {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    data[name] = el ? el.value : '';
+  });
+  const q2Feedback = document.querySelector('textarea[name="q2_feedback"]');
+  data.q2_feedback = q2Feedback ? q2Feedback.value : '';
+  
+  // Question 3
+  ['q3_interest', 'q3_price'].forEach(name => {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    data[name] = el ? el.value : '';
+  });
+  const q3Feedback = document.querySelector('textarea[name="q3_feedback"]');
+  data.q3_feedback = q3Feedback ? q3Feedback.value : '';
+  
+  // Question 4
+  ['q4_usage', 'q4_impact'].forEach(name => {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    data[name] = el ? el.value : '';
+  });
+  const q4Feedback = document.querySelector('textarea[name="q4_feedback"]');
+  data.q4_feedback = q4Feedback ? q4Feedback.value : '';
+  
+  // Question 5
+  const q5Appeal = document.querySelector('input[name="q5_appeal"]:checked');
+  data.q5_appeal = q5Appeal ? q5Appeal.value : '';
+  const q5Feedback = document.querySelector('textarea[name="q5_feedback"]');
+  data.q5_feedback = q5Feedback ? q5Feedback.value : '';
+  
+  // Question 6
+  ['q6_single', 'q6_couple'].forEach(name => {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    data[name] = el ? el.value : '';
+  });
+  ['q6_current', 'q6_improve', 'q6_new'].forEach(name => {
+    const el = document.querySelector(`textarea[name="${name}"]`);
+    data[name] = el ? el.value : '';
+  });
+  
+  // Question 7
+  const q7Improvement = document.querySelector('textarea[name="q7_improvement"]');
+  data.q7_improvement = q7Improvement ? q7Improvement.value : '';
+  
+  // Final thoughts
+  const finalThoughts = document.querySelector('textarea[name="final_thoughts"]');
+  data.final_thoughts = finalThoughts ? finalThoughts.value : '';
+  
   data.timestamp = new Date().toISOString();
   data.screenWhenSubmitted = currentScreen;
+  
   return data;
 }
 
-function submitSurvey(final = true) {
+function submitSurvey() {
   const data = collectSurveyData();
-  if (!final) data.partial = true;
-
-  // Debug log so you can inspect what is being sent in the Network console
+  
   console.log('Submitting survey data to endpoint:', ENDPOINT_URL, data);
 
   fetch(ENDPOINT_URL, {
@@ -1024,43 +1051,16 @@ function submitSurvey(final = true) {
   .then(res => res.text().then(text => ({ ok: res.ok, status: res.status, text })))
   .then(({ ok, status, text }) => {
     console.log('Server response status:', status, 'body:', text);
-    const thankIndex = totalScreens;
-    showScreen(thankIndex);
     document.getElementById('surveyForm').classList.add('hidden');
     document.getElementById('exitMsg').classList.remove('hidden');
   })
   .catch(err => {
     console.error('Submission error', err);
-    alert('There was a problem submitting your responses. Please check your internet connection or try again later.');
-    const thankIndex = totalScreens;
-    showScreen(thankIndex);
+    alert('There was a problem submitting your responses. Your data has been logged to the console. Please contact SENSEA if you need assistance.');
     document.getElementById('surveyForm').classList.add('hidden');
     document.getElementById('exitMsg').classList.remove('hidden');
   });
 }
-
-function findScreenIndexByHeading(text) {
-  for (let i=1;i<=totalScreens;i++) {
-    const el = document.getElementById('screen-' + i);
-    if (!el) continue;
-    const h = el.querySelector('h2, h1');
-    if (h && h.innerText.trim().startsWith(text)) return i;
-  }
-  return null;
-}
-
-function submitPartialSurveyOnExit() {
-  const data = collectSurveyData();
-  data.partial = true;
-  data.screenWhenExited = currentScreen;
-  if (currentScreen > 1 && navigator.sendBeacon) {
-    const body = new URLSearchParams(data).toString();
-    const blob = new Blob([body], { type: "application/x-www-form-urlencoded" });
-    navigator.sendBeacon(ENDPOINT_URL, blob);
-  }
-}
-
-window.addEventListener("beforeunload", submitPartialSurveyOnExit);
 
 document.addEventListener('DOMContentLoaded', function() {
   buildAllScreens();
